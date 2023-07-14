@@ -5,6 +5,7 @@ module.exports = {
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
+  testPathIgnorePatterns: ['/node_modules/'],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   modulePathIgnorePatterns: [
     "<rootDir>/test/__fixtures__",
@@ -13,4 +14,5 @@ module.exports = {
   ],
   testMatch: ['<rootDir>/**/__tests__/**/*.test.ts'],
   preset: "ts-jest",
+  testEnvironment: 'node',
 };
