@@ -1,3 +1,5 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+
 module.exports = {
   roots: ["<rootDir>"],
   transform: {
@@ -9,6 +11,9 @@ module.exports = {
     "<rootDir>/node_modules",
     "<rootDir>/dist",
   ],
-  testMatch: ['<rootDir>/tests/**/*.spec.ts'],
+  moduleNameMapper: {
+    '^@core/(.*)$': '<rootDir>/core/src/$1',
+  },
+  testMatch: ['<rootDir>/**/tests/**/*.spec.ts'],
   preset: "ts-jest",
 };

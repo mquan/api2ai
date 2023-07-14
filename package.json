@@ -30,5 +30,8 @@
       "yarn run format"
     ],
     "*.md": "prettier --write"
+  },
+  "jest": {
+    "projects": ["<rootDir>/core/jest.config.js"]
   }
 }
