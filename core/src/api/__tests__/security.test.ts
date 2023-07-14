@@ -1,4 +1,4 @@
-import Security from "../../src/api/security";
+import Security from "../security";
 
 describe("Security", () => {
   describe("#constructor", () => {

@@ -11,9 +11,6 @@ module.exports = {
     "<rootDir>/node_modules",
     "<rootDir>/dist",
   ],
-  moduleNameMapper: {
-    '^@core/(.*)$': '<rootDir>/core/src/$1',
-  },
-  testMatch: ['<rootDir>/**/tests/**/*.spec.ts'],
+  testMatch: ['<rootDir>/**/__tests__/**/*.test.ts'],
   preset: "ts-jest",
 };
