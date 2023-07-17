@@ -146,6 +146,138 @@ describe("Operation", () => {
       });
     });
 
+    describe("when parameter contains `required` field", () => {
+      beforeEach(() => {
+        const details2 = {
+          summary: "Create a pet.",
+          description: "Create a pet from a pet name.",
+          operationId: "createPets",
+          requestBody: {
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    name: {
+                      type: "string",
+                      description: "Name of the pet",
+                      required: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        };
+
+        operation = new Operation({
+          httpMethod,
+          baseUrl,
+          path,
+          details: details2,
+          securities,
+        });
+      });
+
+      test("returns function with parameters", () => {
+        expect(operation.toFunction()).toEqual({
+          name: "createPets",
+          description: "Create a pet",
+          parameters: {
+            type: "object",
+            properties: {
+              name: {
+                type: "string",
+                description: "Name of the pet",
+              },
+            },
+            required: ["name"],
+          },
+        });
+      });
+    });
+
+    describe("when parameters contain an array", () => {
+      beforeEach(() => {
+        const details2 = {
+          summary: "Create a chat completion",
+          description: "Create a chat completion given user prompt",
+          operationId: "createChatCompletion",
+          requestBody: {
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    messages: {
+                      type: "array",
+                      minItems: 1,
+                      description: "List of chat messages",
+                      items: {
+                        type: "object",
+                        properties: {
+                          role: {
+                            type: "string",
+                            enum: ["system", "user", "assistant", "function"],
+                          },
+                          content: {
+                            type: "string",
+                            nullable: true,
+                          },
+                        },
+                        required: ["role"],
+                      },
+                      required: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        };
+
+        operation = new Operation({
+          httpMethod,
+          baseUrl,
+          path,
+          details: details2,
+          securities,
+        });
+      });
+
+      test("returns function with parsed parameters", () => {
+        expect(operation.toFunction()).toEqual({
+          name: "createChatCompletion",
+          description: "Create a chat completion",
+          parameters: {
+            type: "object",
+            properties: {
+              messages: {
+                type: "array",
+                minItems: 1,
+                description: "List of chat messages",
+                items: {
+                  type: "object",
+                  properties: {
+                    role: {
+                      type: "string",
+                      enum: ["system", "user", "assistant", "function"],
+                    },
+                    content: {
+                      type: "string",
+                      nullable: true,
+                    },
+                  },
+                  required: ["role"],
+                },
+              },
+            },
+            required: ["messages"],
+          },
+        });
+      });
+    });
+
     describe("when requestBody is empty", () => {
       beforeEach(() => {
         const detailsWithoutResponseBody = {

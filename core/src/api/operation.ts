@@ -65,7 +65,7 @@ export default class Operation {
   toFunction() {
     return {
       name: this.details["operationId"].replaceAll("-", "_"),
-      description: this.details["summary"],
+      description: this.summary(),
       parameters: this._parameters(),
     };
   }
@@ -81,39 +81,43 @@ export default class Operation {
   }
 
   _parameters() {
-    const requestBody =
+    const schema =
       this.details?.requestBody?.content["application/json"]?.schema;
 
-    if (requestBody && Object.keys(requestBody).length) {
-      return this._computeParameters(requestBody);
+    if (schema && Object.keys(schema).length) {
+      return this._computeParameters(schema);
     } else {
       return EMPTY_ARGUMENT;
     }
   }
 
-  _computeParameters(requestBody: any) {
+  _computeParameters(schema: any) {
     // TODO: handle query params
-    const required: string[] = [];
+    const requiredItems: string[] = [];
     const properties: any = {};
 
+    // console.log(JSON.stringify(schema))
+
     // What if requestBody.properties not an object?
-    for (let propName in requestBody.properties) {
-      const property = requestBody.properties[propName];
+    for (let propName in schema.properties) {
+      const { required: isRequired, ...remainingProperty } =
+        schema.properties[propName];
 
-      properties[propName] = {
-        type: property.type,
-        description: property.description,
-      };
+      properties[propName] = remainingProperty;
 
-      if (property.required) {
-        required.push(propName);
+      if (isRequired) {
+        requiredItems.push(propName);
       }
+    }
+
+    if (schema.required) {
+      requiredItems.concat(schema.required);
     }
 
     return {
       type: "object",
       properties,
-      required,
+      required: [...new Set(requiredItems)],
     };
   }
 
