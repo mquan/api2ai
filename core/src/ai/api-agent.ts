@@ -30,13 +30,7 @@ export default class ApiAgent {
     Step 2: Invoke function calling for the matched operation, leverage AI to parse user input into args in the same call.
     Step 3: Make the API call
   */
-  async execute({
-    userPrompt,
-    context,
-  }: {
-    userPrompt: string;
-    context: Object;
-  }) {
+  async execute({ userPrompt, context }: { userPrompt: string; context: any }) {
     const operation = await selectOperation({
       userPrompt,
       operations: this.operations,
@@ -51,7 +45,11 @@ export default class ApiAgent {
         openaiApiKey: this.apiKey,
         operation,
       });
-      return await operation.sendRequest({ body: args, authData: context });
+      return await operation.sendRequest({
+        body: args,
+        headers: context?.headers || {},
+        authData: context,
+      });
     } else {
       throw new Error(`Cannot find API for '${userPrompt}'`);
     }

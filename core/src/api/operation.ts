@@ -32,7 +32,7 @@ export default class Operation {
   }
 
   summary(): string {
-    return this.details["summary"];
+    return this.details["summary"].replace(/\.$/, "");
   }
 
   description(): string {
@@ -51,7 +51,11 @@ export default class Operation {
     const response = await fetch(this.url(), {
       method: this.httpMethod,
       body,
-      headers: { ...auth, ...headers },
+      headers: {
+        ...this._requestContentType(),
+        ...auth,
+        ...(headers || {}),
+      },
     });
     const json = await response.json();
 
@@ -64,6 +68,16 @@ export default class Operation {
       description: this.details["summary"],
       parameters: this._parameters(),
     };
+  }
+
+  _requestContentType() {
+    if (this.details?.requestBody?.content["application/json"]) {
+      return { "Content-Type": "application/json" };
+    } else {
+      throw new Error(
+        'Only "application/json" requestBody type is currently supported.'
+      );
+    }
   }
 
   _parameters() {

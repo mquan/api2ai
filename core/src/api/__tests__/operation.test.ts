@@ -80,6 +80,44 @@ describe("Operation", () => {
     test("returns operation summary", () => {
       expect(operation.summary()).toEqual("Create a pet");
     });
+
+    describe("when operation has a period at the end", () => {
+      beforeEach(() => {
+        const details2 = {
+          summary: "Create a pet.",
+          description: "Create a pet from a pet name.",
+          operationId: "createPets",
+          requestBody: {
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    name: {
+                      type: "string",
+                      description: "Name of the pet",
+                      required: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        };
+
+        operation = new Operation({
+          httpMethod,
+          baseUrl,
+          path,
+          details: details2,
+          securities,
+        });
+      });
+
+      test("returns summary without the period", () => {
+        expect(operation.summary()).toEqual("Create a pet");
+      });
+    });
   });
 
   describe("#description", () => {
@@ -210,7 +248,7 @@ describe("Operation", () => {
     let authData: any;
 
     beforeEach(() => {
-      headers = { "Content-Type": "application/json" };
+      headers = { "X-Content-Medata": "foobar" };
       body: {
         name: "Sticky";
       }
@@ -227,6 +265,7 @@ describe("Operation", () => {
         headers: {
           Authorization: "Basic dSRlcjpQYSQkd29yZA==",
           "Content-Type": "application/json",
+          "X-Content-Medata": "foobar",
         },
       });
       expect(result).toEqual({ id: 1, name: "Sticky" });
@@ -267,6 +306,7 @@ describe("Operation", () => {
               body,
               headers: {
                 "Content-Type": "application/json",
+                "X-Content-Medata": "foobar",
               },
             }
           );
