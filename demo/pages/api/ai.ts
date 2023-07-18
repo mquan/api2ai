@@ -1,0 +1,40 @@
+import ApiAgent from "@core/ai/api-agent";
+import { parse } from "@core/api/oas-loader";
+import * as path from "path";
+import "dotenv/config";
+
+const oasesDirectory = path.join(process.cwd(), "oases");
+const oasFilename = path.join(oasesDirectory, "open-ai.yaml");
+const operations = await parse(oasFilename);
+
+const apiAgent = new ApiAgent({
+  apiKey: process.env.OPEN_AI_KEY,
+  model: "gpt-3.5-turbo-0613",
+  operations,
+});
+
+const handler = async (req, res) => {
+  const userPrompt = req.body.userPrompt;
+  let resutl;
+
+  try {
+    result = await apiAgent.execute({
+      userPrompt,
+      context: { token: process.env.OPEN_AI_KEY },
+    });
+
+    res.status(200).json({
+      userPrompt,
+      apiResponse: result,
+    });
+  } catch (error: any) {
+    res.status(422).json({
+      error: {
+        message:
+          "Unable to process your instruction. You can try to tweak your prompt for better result.",
+      },
+    });
+  }
+};
+
+export default handler;

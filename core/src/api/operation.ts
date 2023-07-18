@@ -96,8 +96,6 @@ export default class Operation {
     const requiredItems: string[] = [];
     const properties: any = {};
 
-    // console.log(JSON.stringify(schema))
-
     // What if requestBody.properties not an object?
     for (let propName in schema.properties) {
       const { required: isRequired, ...remainingProperty } =
