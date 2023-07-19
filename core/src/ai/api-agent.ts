@@ -14,7 +14,7 @@ interface AgentInput {
 export default class ApiAgent {
   apiKey: string;
   model: string = DEFAULT_CHAT_MODEL;
-  operations: Operation[];
+  operations: Operation[] | null = null;
   api: string;
 
   constructor({ apiKey, model, api }: AgentInput) {

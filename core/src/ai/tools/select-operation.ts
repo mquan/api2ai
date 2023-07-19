@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 
-import Operation from "@moduleSrc/api/operation";
+import Operation from "../../api/operation";
 
 const selectOperationPrompt = ({
   operations,

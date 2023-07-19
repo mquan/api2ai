@@ -131,10 +131,11 @@ export default class Operation {
       requiredItems.concat(schema.required);
     }
 
+    const requiredSet = new Set(requiredItems);
     return {
       type: "object",
       properties,
-      required: [...new Set(requiredItems)],
+      required: requiredItems,
     };
   }
 

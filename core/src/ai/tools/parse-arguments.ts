@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 
-import Operation from "@moduleSrc/api/operation";
+import Operation from "../../api/operation";
 
 const SYSTEM_PROMPT =
   "Parse user input into arguments. Leave missing parameters blank. Do not make up any information not in user input.";

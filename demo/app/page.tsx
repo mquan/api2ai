@@ -70,8 +70,6 @@ export default function Page() {
           <div className="col-8">
             <textarea
               value={state.prompt}
-              type="message"
-              rows="3"
               className="form-control"
               id="chat-message"
               placeholder="Input message..."

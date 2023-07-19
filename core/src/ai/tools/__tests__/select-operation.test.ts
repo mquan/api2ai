@@ -1,4 +1,4 @@
-import * as path from "path";
+import path from "path";
 
 import { selectOperation } from "../select-operation";
 import { parse } from "../../../api/oas-loader";

@@ -2,6 +2,15 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
+    "lib": ["DOM", "es2020"],
+    "moduleResolution": "node",
+    "target": "es2020",
+    "module": "commonjs",
+    "strict": true,
+    "sourceMap": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@moduleSrc/*": ["./src/*"]
     }

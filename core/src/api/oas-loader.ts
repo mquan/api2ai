@@ -1,4 +1,4 @@
-import * as SwaggerParser from "@apidevtools/swagger-parser";
+import SwaggerParser from "@apidevtools/swagger-parser";
 import Operation from "./operation";
 import Security from "./security";
 
@@ -46,7 +46,7 @@ export const parse = async (filename: string) => {
   const api = await SwaggerParser.dereference(filename);
   const securities = parseSecurities(api);
 
-  const operations = [];
+  const operations: Operation[] = [];
 
   for (let path in api.paths) {
     for (let httpMethod in api.paths[path]) {
