@@ -15,7 +15,7 @@ const apiAgent = new ApiAgent({
 
 const handler = async (req, res) => {
   const userPrompt = req.body.userPrompt;
-  let resutl;
+  let result;
 
   try {
     result = await apiAgent.execute({
@@ -23,15 +23,11 @@ const handler = async (req, res) => {
       context: { token: process.env.OPEN_AI_KEY },
     });
 
-    res.status(200).json({
-      userPrompt,
-      apiResponse: result,
-    });
+    res.status(200).json(result);
   } catch (error: any) {
     res.status(422).json({
       error: {
-        message:
-          "Unable to process your instruction. You can try to tweak your prompt for better result.",
+        message: `Prcoess failed with error ${error.message}. You can try to tweak your prompt for better result.`,
       },
     });
   }

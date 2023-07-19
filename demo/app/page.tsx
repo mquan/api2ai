@@ -49,7 +49,7 @@ export default function Page() {
       <div
         id="chat-log-container"
         className="mt-5 mb-5"
-        style={{ height: 600, "overflow-y": "scroll" }}
+        style={{ height: 600, overflowY: "scroll" }}
       >
         <table id="chat-log" className="table table-borderless table-striped">
           <tbody id="chat-log-body">

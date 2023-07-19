@@ -46,6 +46,9 @@ const details = {
 };
 let securities = [new Security({ type: "http", scheme: "basic" })];
 
+let responseHeaders = { "X-Response-Status": "Complete" };
+let responseStatus = 201;
+
 const createOperation = () => {
   return new Operation({
     httpMethod,
@@ -59,6 +62,8 @@ const createOperation = () => {
 let petResponse: Object;
 global.fetch = jest.fn(() =>
   Promise.resolve({
+    headers: responseHeaders,
+    status: responseStatus,
     json: () => Promise.resolve(petResponse),
   })
 ) as jest.Mock;
@@ -400,7 +405,24 @@ describe("Operation", () => {
           "X-Content-Medata": "foobar",
         },
       });
-      expect(result).toEqual({ id: 1, name: "Sticky" });
+
+      expect(result).toEqual({
+        request: {
+          url: "http://petstore.swagger.io/v1/pets",
+          method: "post",
+          headers: {
+            Authorization: "Basic dSRlcjpQYSQkd29yZA==",
+            "Content-Type": "application/json",
+            "X-Content-Medata": "foobar",
+          },
+          body,
+        },
+        response: {
+          headers: responseHeaders,
+          status: responseStatus,
+          body: { id: 1, name: "Sticky" },
+        },
+      });
     });
 
     describe("when auth data is not present", () => {
@@ -442,7 +464,23 @@ describe("Operation", () => {
               },
             }
           );
-          expect(result).toEqual({ id: 1, name: "Sticky" });
+
+          expect(result).toEqual({
+            request: {
+              url: "http://petstore.swagger.io/v1/pets",
+              method: "post",
+              headers: {
+                "Content-Type": "application/json",
+                "X-Content-Medata": "foobar",
+              },
+              body,
+            },
+            response: {
+              headers: responseHeaders,
+              status: responseStatus,
+              body: { id: 1, name: "Sticky" },
+            },
+          });
         });
       });
     });

@@ -45,11 +45,18 @@ export default class ApiAgent {
         openaiApiKey: this.apiKey,
         operation,
       });
-      return await operation.sendRequest({
+
+      const apiResult = await operation.sendRequest({
         body: args,
         headers: context?.headers || {},
         authData: context,
       });
+
+      return {
+        userPrompt,
+        selectedOperation: operation.operationId(),
+        ...apiResult,
+      };
     } else {
       throw new Error(`Cannot find API for '${userPrompt}'`);
     }

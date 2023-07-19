@@ -31,6 +31,10 @@ export default class Operation {
     this.securities = securities;
   }
 
+  operationId(): string {
+    return this.details["operationId"];
+  }
+
   summary(): string {
     return this.details["summary"].replace(/\.$/, "");
   }
@@ -48,18 +52,33 @@ export default class Operation {
   async sendRequest({ headers, body, authData }: any) {
     // TODO: handle auth that's not in the headers.
     const auth = this._computeAuth(authData);
-    const response = await fetch(this.url(), {
+    const requestHeaders = {
+      ...this._requestContentType(),
+      ...auth,
+      ...(headers || {}),
+    };
+    const url = this.url();
+
+    const response = await fetch(url, {
       method: this.httpMethod,
       body,
-      headers: {
-        ...this._requestContentType(),
-        ...auth,
-        ...(headers || {}),
-      },
+      headers: requestHeaders,
     });
-    const json = await response.json();
+    const responseBody = await response.json();
 
-    return json;
+    return {
+      request: {
+        url,
+        method: this.httpMethod,
+        headers: requestHeaders,
+        body,
+      },
+      response: {
+        headers: response.headers,
+        status: response.status,
+        body: responseBody,
+      },
+    };
   }
 
   toFunction() {

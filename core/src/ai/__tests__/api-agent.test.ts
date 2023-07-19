@@ -8,8 +8,13 @@ let parseArgsResponse: any;
 let errorData: any;
 
 let petResponse: Object;
+let responseHeaders = { "X-Response-Status": "Complete" };
+let responseStatus = 201;
+
 global.fetch = jest.fn(() =>
   Promise.resolve({
+    headers: responseHeaders,
+    status: responseStatus,
     json: () => Promise.resolve(petResponse),
   })
 ) as jest.Mock;
@@ -46,11 +51,14 @@ describe("ApiAgent", () => {
     "../../../fixtures/oases/petstore.yaml"
   );
   let context: Object;
+  let userPrompt: string;
 
   describe("#execute", () => {
     let agent: ApiAgent;
 
     beforeEach(async () => {
+      userPrompt = "add new pet named Skip";
+
       const operations = await parse(filename);
 
       context = { token: "my-token" };
@@ -80,11 +88,28 @@ describe("ApiAgent", () => {
 
     test("using a prompt that matches one of the operations", async () => {
       const result = await agent.execute({
-        userPrompt: "add new pet named Skip",
+        userPrompt,
         context,
       });
 
-      expect(result).toEqual(petResponse);
+      expect(result).toEqual({
+        userPrompt,
+        selectedOperation: "createPets",
+        request: {
+          url: "http://petstore.swagger.io/v1/pets",
+          method: "post",
+          headers: {
+            Authorization: "Bearer my-token",
+            "Content-Type": "application/json",
+          },
+          body: { name: "Sticky" },
+        },
+        response: {
+          headers: responseHeaders,
+          status: responseStatus,
+          body: petResponse,
+        },
+      });
     });
   });
 });
