@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 const URL = "/api/ai";
 
 export default function Page() {
@@ -8,6 +8,8 @@ export default function Page() {
     messages: [{ role: "AI", content: "How can I help you?" }],
     prompt: "",
   });
+  const messagesRef = useRef(state.messages);
+  messagesRef.current = state.messages;
 
   const postToAi = async (userPrompt) => {
     const resp = await fetch(URL, {
@@ -20,11 +22,12 @@ export default function Page() {
     });
     const data = await resp.json();
 
+    messagesRef.current = [
+      ...messagesRef.current,
+      { role: "AI", content: JSON.stringify(data) },
+    ];
     setState({
-      messages: [
-        ...state.messages,
-        { role: "AI", content: JSON.stringify(data) },
-      ],
+      messages: messagesRef.current,
       prompt: state.prompt,
     });
   };
@@ -38,8 +41,12 @@ export default function Page() {
 
     postToAi(state.prompt);
 
+    messagesRef.current = [
+      ...messagesRef.current,
+      { role: "User", content: state.prompt },
+    ];
     setState({
-      messages: [...state.messages, { role: "User", content: state.prompt }],
+      messages: messagesRef.current,
       prompt: "",
     });
   };
