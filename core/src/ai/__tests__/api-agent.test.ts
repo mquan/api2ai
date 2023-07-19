@@ -86,29 +86,51 @@ describe("ApiAgent", () => {
       petResponse = { id: 1, name: "Sticky" };
     });
 
-    test("using a prompt that matches one of the operations", async () => {
-      const result = await agent.execute({
-        userPrompt,
-        context,
-      });
+    describe("when not verbose", () => {
+      test("using a prompt that matches one of the operations", async () => {
+        const result = await agent.execute({
+          userPrompt,
+          context,
+        });
 
-      expect(result).toEqual({
-        userPrompt,
-        selectedOperation: "createPets",
-        request: {
-          url: "http://petstore.swagger.io/v1/pets",
-          method: "post",
-          headers: {
-            Authorization: "Bearer my-token",
-            "Content-Type": "application/json",
+        expect(result).toEqual({
+          userPrompt,
+          selectedOperation: "createPets",
+          response: {
+            headers: responseHeaders,
+            status: responseStatus,
+            body: petResponse,
           },
-          body: { name: "Sticky" },
-        },
-        response: {
-          headers: responseHeaders,
-          status: responseStatus,
-          body: petResponse,
-        },
+        });
+      });
+    });
+
+    describe("when verbose", () => {
+      test("using a prompt that matches one of the operations", async () => {
+        const result = await agent.execute({
+          userPrompt,
+          context,
+          verbose: true,
+        });
+
+        expect(result).toEqual({
+          userPrompt,
+          selectedOperation: "createPets",
+          request: {
+            url: "http://petstore.swagger.io/v1/pets",
+            method: "post",
+            headers: {
+              Authorization: "Bearer my-token",
+              "Content-Type": "application/json",
+            },
+            body: { name: "Sticky" },
+          },
+          response: {
+            headers: responseHeaders,
+            status: responseStatus,
+            body: petResponse,
+          },
+        });
       });
     });
   });

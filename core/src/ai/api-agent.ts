@@ -30,7 +30,15 @@ export default class ApiAgent {
     Step 2: Invoke function calling for the matched operation, leverage AI to parse user input into args in the same call.
     Step 3: Make the API call
   */
-  async execute({ userPrompt, context }: { userPrompt: string; context: any }) {
+  async execute({
+    userPrompt,
+    context,
+    verbose = false,
+  }: {
+    userPrompt: string;
+    context: any;
+    verbose?: boolean;
+  }) {
     const operation = await selectOperation({
       userPrompt,
       operations: this.operations,
@@ -52,11 +60,19 @@ export default class ApiAgent {
         authData: context,
       });
 
-      return {
-        userPrompt,
-        selectedOperation: operation.operationId(),
-        ...apiResult,
-      };
+      if (verbose) {
+        return {
+          userPrompt,
+          selectedOperation: operation.operationId(),
+          ...apiResult,
+        };
+      } else {
+        return {
+          userPrompt,
+          selectedOperation: operation.operationId(),
+          response: apiResult.response,
+        };
+      }
     } else {
       throw new Error(`Cannot find API for '${userPrompt}'`);
     }
