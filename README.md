@@ -13,7 +13,6 @@ import { ApiAgent } from "@api2ai";
 
 const OPEN_AI_KEY = "sk-...";
 
-// This example builds on top of the OpenAI API, essentially creating a single API for all OpenAI endpoints.
 const agent = new ApiAgent({
   apiKey: OPEN_AI_KEY,
   model: "gpt-3.5-turbo-0613", // "gpt-4-turbo-0613" also works
@@ -28,7 +27,7 @@ const result = await agent.execute({
 
 ## Features
 
-api2ai allows you to integrate to any API using English, or any natural language:
+**api2ai** allows you to integrate to any API using English, or any natural language:
 
 - Automatically parses API spec and auth schemes
 - Select endpoint and parse arguments provided in user prompt
@@ -53,3 +52,7 @@ Access the demo from `http://localhost:5555/`
 To run all tests
 
 `yarn test`
+
+Run a single test file
+
+`turbo run test -- core/src/api/__tests__/operation.test.ts`
