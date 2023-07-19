@@ -2,6 +2,8 @@
 
 ⚡ Generate a conversational AI from any Open API spec ⚡
 
+<img width="1330" alt="Screen Shot 2023-07-19 at 1 58 49 PM" src="https://github.com/mquan/api2ai/assets/138784/90393491-57e1-44e0-955a-4aa1e1673266">
+
 ## Installation & Basic Usage
 
 `yarn add --save api2ai`
