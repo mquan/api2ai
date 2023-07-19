@@ -1,7 +1,6 @@
 import * as path from "path";
 
 import ApiAgent from "../api-agent";
-import { parse } from "../../api/oas-loader";
 
 let selectOperationResponse: any;
 let parseArgsResponse: any;
@@ -59,15 +58,13 @@ describe("ApiAgent", () => {
     beforeEach(async () => {
       userPrompt = "add new pet named Skip";
 
-      const operations = await parse(filename);
-
       context = { token: "my-token" };
 
       const openAIKey = "openai-api-key";
       agent = new ApiAgent({
         apiKey: openAIKey,
         model: "gpt-3.5-turbo-0613",
-        operations,
+        api: filename,
       });
 
       // Mocked data

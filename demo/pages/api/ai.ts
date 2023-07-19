@@ -1,16 +1,14 @@
 import ApiAgent from "@core/ai/api-agent";
-import { parse } from "@core/api/oas-loader";
 import * as path from "path";
 import "dotenv/config";
 
 const oasesDirectory = path.join(process.cwd(), "oases");
 const oasFilename = path.join(oasesDirectory, "open-ai.yaml");
-const operations = await parse(oasFilename);
 
 const apiAgent = new ApiAgent({
   apiKey: process.env.OPEN_AI_KEY,
   model: "gpt-3.5-turbo-0613",
-  operations,
+  api: oasFilename,
 });
 
 const handler = async (req, res) => {
