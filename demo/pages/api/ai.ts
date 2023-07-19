@@ -1,4 +1,4 @@
-import ApiAgent from "@core/ai/api-agent";
+import { ApiAgent } from "@api2ai/core";
 import path from "path";
 import "dotenv/config";
 
