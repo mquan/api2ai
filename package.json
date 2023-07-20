@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
+    "publish-packages": "turbo run build lint test && changeset version && changeset publish",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
@@ -12,6 +13,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "changeset": "^0.2.6",
     "@turbo/gen": "^1.9.7",
     "@types/jest": "^29.5.3",
     "eslint": "^7.32.0",

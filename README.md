@@ -1,4 +1,4 @@
-# ☁️🔗🧠 api2ai
+# ☁️⇨🤖🧠 api2ai
 
 ⚡ Generate a conversational AI from any Open API spec ⚡
 
@@ -11,19 +11,20 @@
 The following example builds on top of OpenAI API, essentially creating a single endpoint for all OpenAI endpoints. Please check out the [demo code](https://github.com/mquan/api2ai/blob/main/demo/pages/api/ai.ts) for more details.
 
 ```typescript
-import { ApiAgent } from "api2ai";
+import { ApiAgent } from "@api2ai/core";
 
 const OPEN_AI_KEY = "sk-...";
 
 const agent = new ApiAgent({
   apiKey: OPEN_AI_KEY,
-  model: "gpt-3.5-turbo-0613", // "gpt-4-turbo-0613" also works
+  model: "gpt-3.5-turbo-0613", // "gpt-4-0613" also works
   api: "path/to/your/open-api-spec.yaml",
 });
 
 const result = await agent.execute({
   userPrompt: "Create an image of Waikiki beach",
   context: { token: OPEN_AI_KEY },
+  verbose: true, // default: false
 });
 ```
 
@@ -36,7 +37,7 @@ const result = await agent.execute({
 - Invoke the API call and return the response
 - Conserve tokens to reduce OpenAI cost, also bypass OpenAI 64 functions limit.
 
-## Development
+## Development & Contributing
 
 We use yarn and [turbo](https://turbo.build/). Please clone the repo and install both in order to run the demo and build in your machine.
 
