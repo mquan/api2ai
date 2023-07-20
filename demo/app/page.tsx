@@ -24,7 +24,7 @@ export default function Page() {
 
     messagesRef.current = [
       ...messagesRef.current,
-      { role: "AI", content: JSON.stringify(data) },
+      { role: "AI", content: JSON.stringify(data, null, "\t") },
     ];
     setState({
       messages: messagesRef.current,
