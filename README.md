@@ -6,7 +6,7 @@
 
 ## Installation & Basic Usage
 
-`yarn add --save api2ai`
+`yarn add --save @api2ai/core`
 
 The following example builds on top of OpenAI API, essentially creating a single endpoint for all OpenAI endpoints. Please check out the [demo code](https://github.com/mquan/api2ai/blob/main/demo/pages/api/ai.ts) for more details.
 

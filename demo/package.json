@@ -1,7 +1,6 @@
 {
   "name": "@api2ai/demo",
-  "version": "1.0.0",
-  "private": true,
+  "version": "0.1.1",
   "scripts": {
     "dev": "next dev -p 5555",
     "build": "next build",

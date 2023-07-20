@@ -1,6 +1,6 @@
 {
   "name": "@api2ai/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
@@ -10,6 +10,7 @@
     "build": "tsup ./index.ts --format cjs --dts"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
     "eslint": "^7.32.0",
     "eslint-config-custom": "*",
     "@types/jest": "^26.0.22",

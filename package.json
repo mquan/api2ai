@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -13,7 +13,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "changeset": "^0.2.6",
+    "changesets": "^1.0.2",
     "@turbo/gen": "^1.9.7",
     "@types/jest": "^29.5.3",
     "eslint": "^7.32.0",
@@ -23,7 +23,7 @@
     "prettier": "^2.5.1",
     "turbo": "latest"
   },
-  "name": "api2ai",
+  "name": "@api2ai/repo",
   "packageManager": "yarn@1.22.19",
   "workspaces": [
     "core",
