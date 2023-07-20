@@ -58,11 +58,14 @@ export default class Operation {
       ...(headers || {}),
     };
     const url = this.url();
+    const requestBody = ["get", "head"].includes(this.httpMethod)
+      ? {}
+      : { body };
 
     const response = await fetch(url, {
       method: this.httpMethod,
-      body,
       headers: requestHeaders,
+      ...requestBody,
     });
     const responseBody = await response.json();
 
@@ -71,7 +74,7 @@ export default class Operation {
         url,
         method: this.httpMethod,
         headers: requestHeaders,
-        body,
+        ...requestBody,
       },
       response: {
         headers: response.headers,
@@ -90,9 +93,12 @@ export default class Operation {
   }
 
   _requestContentType() {
-    if (this.details?.requestBody?.content["application/json"]) {
+    if (
+      !this.details?.requestBody ||
+      this.details?.requestBody?.content["application/json"]
+    ) {
       return { "Content-Type": "application/json" };
-    } else {
+    } else if (this.details?.requestBody) {
       throw new Error(
         'Only "application/json" requestBody type is currently supported.'
       );

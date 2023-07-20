@@ -425,6 +425,51 @@ describe("Operation", () => {
       });
     });
 
+    describe("when request does not have body", () => {
+      beforeEach(() => {
+        operation = new Operation({
+          httpMethod: "get",
+          baseUrl,
+          path,
+          details,
+          securities,
+        });
+      });
+
+      test("makes a request without body", async () => {
+        const result = await operation.sendRequest({ headers, body, authData });
+
+        expect(fetch).toHaveBeenCalledWith(
+          "http://petstore.swagger.io/v1/pets",
+          {
+            method: "get",
+            headers: {
+              Authorization: "Basic dSRlcjpQYSQkd29yZA==",
+              "Content-Type": "application/json",
+              "X-Content-Medata": "foobar",
+            },
+          }
+        );
+
+        expect(result).toEqual({
+          request: {
+            url: "http://petstore.swagger.io/v1/pets",
+            method: "get",
+            headers: {
+              Authorization: "Basic dSRlcjpQYSQkd29yZA==",
+              "Content-Type": "application/json",
+              "X-Content-Medata": "foobar",
+            },
+          },
+          response: {
+            headers: responseHeaders,
+            status: responseStatus,
+            body: { id: 1, name: "Sticky" },
+          },
+        });
+      });
+    });
+
     describe("when auth data is not present", () => {
       beforeEach(() => {
         authData = undefined;

@@ -18,6 +18,13 @@ export const parseArguments = async ({
   openaiApiKey,
   operation,
 }: ParseArgumentsInput) => {
+  const functionSpec = operation.toFunction();
+
+  // Skip parsing args if there's none.
+  if (Object.keys(functionSpec.parameters).length === 0) {
+    return {};
+  }
+
   try {
     const aiConfig = new Configuration({ apiKey: openaiApiKey });
     const openai = new OpenAIApi(aiConfig);
@@ -28,7 +35,7 @@ export const parseArguments = async ({
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: userPrompt },
       ],
-      functions: [operation.toFunction()],
+      functions: [functionSpec],
     });
 
     return (

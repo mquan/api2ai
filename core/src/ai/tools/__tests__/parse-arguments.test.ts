@@ -35,10 +35,11 @@ describe("parseArguments", () => {
     __dirname,
     "../../../../fixtures/oases/petstore.yaml"
   );
+  let operations: Operation[];
   let operation: Operation;
 
   beforeEach(async () => {
-    const operations = await parse(filename);
+    operations = await parse(filename);
     operation = operations[1];
     errorData = null;
   });
@@ -77,6 +78,23 @@ describe("parseArguments", () => {
     });
 
     expect(result).toEqual({});
+  });
+
+  describe("when operation does not have any parameters", () => {
+    beforeEach(() => {
+      operation = operations[0];
+    });
+
+    test("does not hit AI and return empty object", async () => {
+      const result = await parseArguments({
+        userPrompt: "Add a new pet named Sticky",
+        openaiApiKey: "secretKey",
+        model: "gpt-3.5-turbo-0613",
+        operation,
+      });
+
+      expect(result).toEqual({});
+    });
   });
 
   test("When there is a generic error with the request", async () => {
