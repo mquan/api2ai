@@ -11,7 +11,7 @@
 The following example builds on top of OpenAI API, essentially creating a single endpoint for all OpenAI endpoints. Please check out the [demo code](https://github.com/mquan/api2ai/blob/main/demo/pages/api/ai.ts) for more details.
 
 ```typescript
-import { ApiAgent } from "@api2ai";
+import { ApiAgent } from "api2ai";
 
 const OPEN_AI_KEY = "sk-...";
 
