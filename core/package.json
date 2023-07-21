@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
     "test": "jest",
-    "build": "tsup ./index.ts --format cjs,esm --dts --clean"
+    "build": "tsup ./index.ts --format esm --dts --clean"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
