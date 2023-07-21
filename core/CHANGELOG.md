@@ -1,5 +1,11 @@
 # @api2ai/core
 
+## 0.2.0
+
+### Minor Changes
+
+- Exclude cjs build
+
 ## 0.1.2
 
 ### Patch Changes
