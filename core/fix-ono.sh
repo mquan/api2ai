@@ -1,0 +1,1 @@
+sed -i '' -e 's,typeof module === "object" && typeof module.exports === "object",typeof module === "object" \&\& typeof module.exports === "object" \&\& typeof module.exports.default === "object",g' dist/*

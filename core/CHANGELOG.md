@@ -1,5 +1,17 @@
 # @api2ai/core
 
+## 0.3.0
+
+### Minor Changes
+
+- Fix ono commonjs hack problem in script
+
+## 0.2.1
+
+### Patch Changes
+
+- Patch ono commonjs problem
+
 ## 0.2.0
 
 ### Minor Changes
