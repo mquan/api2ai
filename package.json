@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run build && cp ./README.md core/README.md",
     "publish-packages": "turbo run build lint test && ./fix-ono.sh && changeset version && changeset publish",
     "dev": "turbo run dev",
     "lint": "turbo run lint",

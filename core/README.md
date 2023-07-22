@@ -4,11 +4,9 @@
 
 <img width="1330" alt="Screen Shot 2023-07-19 at 1 58 49 PM" src="https://github.com/mquan/api2ai/assets/138784/90393491-57e1-44e0-955a-4aa1e1673266">
 
-## Installation
+## Installation & Quickstart
 
 `yarn add --save @api2ai/core`
-
-## Quickstart
 
 The following example builds on top of OpenAI API, essentially creating a single endpoint for all OpenAI endpoints. Please check out the [demo code](https://github.com/mquan/api2ai/blob/main/demo/pages/api/ai.ts) for more details.
 
@@ -32,7 +30,7 @@ const result = await agent.execute({
 
 ## Features
 
-**api2ai** allows you to interface with any API using English, or any natural language:
+**api2ai** allows you to integrate with any API using English, or any natural language:
 
 - Automatically parses API spec and auth schemes
 - Select endpoint and parse arguments provided in user prompt
