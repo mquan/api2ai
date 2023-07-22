@@ -4,7 +4,7 @@
 
 <img width="1330" alt="Screen Shot 2023-07-19 at 1 58 49 PM" src="https://github.com/mquan/api2ai/assets/138784/90393491-57e1-44e0-955a-4aa1e1673266">
 
-## Installation & Basic Usage
+## Installation & Quickstart
 
 `yarn add --save @api2ai/core`
 
@@ -30,12 +30,12 @@ const result = await agent.execute({
 
 ## Features
 
-**api2ai** allows you to integrate to any API using English, or any natural language:
+**api2ai** allows you to integrate with any API using English, or any natural language:
 
 - Automatically parses API spec and auth schemes
 - Select endpoint and parse arguments provided in user prompt
 - Invoke the API call and return the response
-- Conserve tokens to reduce OpenAI cost, also bypass OpenAI 64 functions limit.
+- Conserve tokens to optimize OpenAI cost
 
 ## Development & Contributing
 
