@@ -1,4 +1,5 @@
-import { ApiAgent } from "@api2ai/core";
+// Don't import from @api2ai/core b/c the build needs fix-ono.sh
+import { ApiAgent } from "../../../core/index";
 import path from "path";
 import "dotenv/config";
 
@@ -19,6 +20,7 @@ const handler = async (req, res) => {
     result = await apiAgent.execute({
       userPrompt,
       context: { token: process.env["OPEN_AI_KEY"] },
+      verbose: true,
     });
 
     res.status(200).json(result);

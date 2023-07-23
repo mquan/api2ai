@@ -3,15 +3,49 @@
 import { useState, useRef } from "react";
 const URL = "/api/ai";
 
+const renderContent = (data) => {
+  if (data.selectedOperation === "createImage") {
+    const imageUrl = data.response.body.data[0].url;
+
+    return (
+      <div>
+        <p>
+          <strong>
+            API used: {data.request.method.toUpperCase()} {data.request.url}
+          </strong>
+        </p>
+        <a href={imageUrl} target="_blank">
+          <img src={imageUrl} height={300} />
+        </a>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <p>
+          <strong>
+            API used: {data.request.method.toUpperCase()} {data.request.url}
+          </strong>
+        </p>
+        <pre>
+          <code>{JSON.stringify(data.response, null, "\t")}</code>
+        </pre>
+      </div>
+    );
+  }
+};
+
 export default function Page() {
   const [state, setState] = useState({
-    messages: [{ role: "AI", content: "How can I help you?" }],
+    messages: [
+      { id: `${Date.now()}`, role: "AI", content: <div>How can I help?</div> },
+    ],
     prompt: "",
   });
-  const messagesRef = useRef(state.messages);
-  messagesRef.current = state.messages;
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
-  const postToAi = async (userPrompt) => {
+  const postToAi = async ({ userPrompt, messageId }) => {
     const resp = await fetch(URL, {
       headers: {
         Accept: "application/json",
@@ -22,13 +56,17 @@ export default function Page() {
     });
     const data = await resp.json();
 
-    messagesRef.current = [
-      ...messagesRef.current,
-      { role: "AI", content: JSON.stringify(data, null, "\t") },
-    ];
+    stateRef.current.messages = stateRef.current.messages.map((message) => {
+      if (message.id === messageId) {
+        message.content = renderContent(data);
+      }
+
+      return message;
+    });
+
     setState({
-      messages: messagesRef.current,
-      prompt: state.prompt,
+      prompt: stateRef.current.prompt,
+      messages: stateRef.current.messages,
     });
   };
 
@@ -39,20 +77,43 @@ export default function Page() {
       return;
     }
 
-    postToAi(state.prompt);
+    const currentTime = Date.now();
+    const userMessageId = `${currentTime}0`;
+    const aiMessageId = `${currentTime}1`;
 
-    messagesRef.current = [
-      ...messagesRef.current,
-      { role: "User", content: state.prompt },
-    ];
-    setState({
-      messages: messagesRef.current,
+    postToAi({ userPrompt: state.prompt, messageId: aiMessageId });
+
+    stateRef.current = {
       prompt: "",
-    });
+      messages: [
+        ...stateRef.current.messages,
+        { id: userMessageId, role: "User", content: <div>{state.prompt}</div> },
+        {
+          id: aiMessageId,
+          role: "AI",
+          content: (
+            <div>
+              Processing your message{" "}
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+              ></span>
+            </div>
+          ),
+        },
+      ],
+    };
+    setState(stateRef.current);
   };
 
   return (
     <div className="row py-lg-5">
+      <h2>
+        <a href="https://github.com/mquan/api2ai" target="_blank">
+          api2ai
+        </a>{" "}
+        demo
+      </h2>
       <div
         id="chat-log-container"
         className="mt-5 mb-5"
@@ -60,9 +121,9 @@ export default function Page() {
       >
         <table id="chat-log" className="table table-borderless table-striped">
           <tbody id="chat-log-body">
-            {state.messages.map((message, index) => {
+            {state.messages.map((message) => {
               return (
-                <tr key={index}>
+                <tr key={message.id}>
                   <th>{message.role}</th>
                   <td>{message.content}</td>
                 </tr>
@@ -80,9 +141,13 @@ export default function Page() {
               className="form-control"
               id="chat-message"
               placeholder="Input message..."
-              onChange={(e) =>
-                setState({ messages: state.messages, prompt: e.target.value })
-              }
+              onChange={(e) => {
+                stateRef.current.prompt = e.target.value;
+                setState({
+                  prompt: stateRef.current.prompt,
+                  messages: stateRef.current.messages,
+                });
+              }}
             ></textarea>
           </div>
           <div className="col-2">
