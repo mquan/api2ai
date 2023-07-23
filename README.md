@@ -2,7 +2,7 @@
 
 ⚡ Generate a conversational AI from any Open API spec ⚡
 
-<img width="1330" alt="Screen Shot 2023-07-19 at 1 58 49 PM" src="https://github.com/mquan/api2ai/assets/138784/90393491-57e1-44e0-955a-4aa1e1673266">
+<img width="680" alt="api2ai demo with multiple APIs" src="https://github.com/mquan/api2ai/assets/138784/6719fdb2-6687-4768-a599-d61d7ab454a6">
 
 ## Features
 
@@ -12,6 +12,8 @@
 - Select endpoint and parse arguments provided in user prompt
 - Invoke the API call and return the response
 - Comes with a local API
+
+<img width="901" alt="api2ai demo with multiple languages" src="https://github.com/mquan/api2ai/assets/138784/aead4548-7d61-4ec6-8228-7c999e182cf0">
 
 ## Installation
 
