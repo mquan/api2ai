@@ -19,7 +19,7 @@ const renderContent = (data) => {
         </a>
       </div>
     );
-  } else {
+  } else if (data.request && data.response) {
     return (
       <div>
         <p>
@@ -29,6 +29,14 @@ const renderContent = (data) => {
         </p>
         <pre>
           <code>{JSON.stringify(data.response, null, "\t")}</code>
+        </pre>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <pre>
+          <code>{JSON.stringify(data, null, "\t")}</code>
         </pre>
       </div>
     );
