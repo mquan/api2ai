@@ -77,20 +77,28 @@ Tips: We leverage the `summary` fields to determine which endpoint to use. You c
 
 ### Authentication
 
-Configure your auth credentials under the `auth` key for applicable APIs
+Configure your API auth credentials under the `auth` key for applicable APIs:
 
 ```
-{
+export const configs = {
   model: "gpt-3.5-turbo-0613",
   token: process.env["OPEN_AI_KEY"],
   apis: [
     {
-      file:,
-      auth:,
+      file: "path/to/your-open-api-spec.yaml",
+      auth: { token: process.env["MY_API_KEY"] },
     }
   ]
-}
+};
 ```
+
+Currently, we support the following auth schemes:
+
+- Bearer auth (token in Authorization header)
+- API key
+- basic (username and password)
+
+Please ensure `securitySchemes` fields are properly defined. Please refer to the [Swagger doc](https://swagger.io/docs/specification/authentication/) for more details.
 
 ## Development & Contributing
 
