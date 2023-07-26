@@ -1,6 +1,7 @@
 import Operation from "../operation";
 import Security from "../security";
 
+const group = "petstore";
 const httpMethod = "post";
 const baseUrl = "http://petstore.swagger.io/v1";
 const path = "/pets";
@@ -51,6 +52,7 @@ let responseStatus = 201;
 
 const createOperation = () => {
   return new Operation({
+    group,
     httpMethod,
     baseUrl,
     path,
@@ -76,8 +78,14 @@ describe("Operation", () => {
   });
 
   describe("#url", () => {
-    test("returns opeartion full URL", () => {
+    test("returns operation full URL", () => {
       expect(operation.url()).toEqual("http://petstore.swagger.io/v1/pets");
+    });
+  });
+
+  describe("#group", () => {
+    test("returns API group name", () => {
+      expect(operation.group).toEqual("petstore");
     });
   });
 
@@ -111,6 +119,7 @@ describe("Operation", () => {
         };
 
         operation = new Operation({
+          group,
           httpMethod,
           baseUrl,
           path,
@@ -176,6 +185,7 @@ describe("Operation", () => {
         };
 
         operation = new Operation({
+          group,
           httpMethod,
           baseUrl,
           path,
@@ -242,6 +252,7 @@ describe("Operation", () => {
         };
 
         operation = new Operation({
+          group,
           httpMethod,
           baseUrl,
           path,
@@ -316,6 +327,7 @@ describe("Operation", () => {
         };
 
         operation = new Operation({
+          group,
           httpMethod,
           baseUrl,
           path,
@@ -361,6 +373,7 @@ describe("Operation", () => {
         };
 
         operation = new Operation({
+          group,
           httpMethod,
           baseUrl,
           path,
@@ -428,6 +441,7 @@ describe("Operation", () => {
     describe("when request does not have body", () => {
       beforeEach(() => {
         operation = new Operation({
+          group,
           httpMethod: "get",
           baseUrl,
           path,

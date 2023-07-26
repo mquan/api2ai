@@ -56,6 +56,7 @@ export const parse = async (filename: string) => {
 
       operations.push(
         new Operation({
+          group: api.info?.title,
           httpMethod,
           path,
           baseUrl: api.servers[0].url, // TODO: allow picking baseUrl

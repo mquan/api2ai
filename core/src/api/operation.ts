@@ -1,6 +1,7 @@
 import Security from "./security";
 
 interface OperationInput {
+  group: string;
   httpMethod: string;
   baseUrl: string;
   path: string;
@@ -11,6 +12,7 @@ interface OperationInput {
 const EMPTY_ARGUMENT: object = {};
 
 export default class Operation {
+  group: string;
   httpMethod: string = "get";
   baseUrl: string;
   path: string;
@@ -18,12 +20,14 @@ export default class Operation {
   securities: Security[];
 
   constructor({
+    group,
     httpMethod,
     baseUrl,
     path,
     details,
     securities,
   }: OperationInput) {
+    this.group = group;
     this.httpMethod = httpMethod.toLowerCase();
     this.baseUrl = baseUrl;
     this.path = path;
