@@ -1,5 +1,5 @@
 {
-  "name": "@api2ai/demo",
+  "name": "@api2ai/server",
   "version": "0.1.1",
   "private": true,
   "scripts": {

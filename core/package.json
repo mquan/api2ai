@@ -4,6 +4,12 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
+  "keywords": [
+    "Open API Spec",
+    "ai",
+    "api",
+    "openai"
+  ],
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
     "test": "jest",

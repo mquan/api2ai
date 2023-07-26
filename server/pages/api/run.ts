@@ -27,7 +27,7 @@ const handler = async (req, res) => {
   } catch (error: any) {
     res.status(422).json({
       error: {
-        message: `Process failed with error ${error.message}. You can try to tweak your prompt for better result.`,
+        message: `Process failed with error. Please tweak your prompt for better result. \n${error.message}`,
       },
     });
   }

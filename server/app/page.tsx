@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-const URL = "/api/ai";
+const URL = "/api/run";
 
 const renderContent = (data) => {
   if (data.selectedOperation === "createImage") {
@@ -141,7 +141,7 @@ export default function Page() {
         </table>
       </div>
 
-      <form id="chat-form" action="/api/ai" method="post">
+      <form id="chat-form" action="/api/run" method="post">
         <div className="row">
           <div className="col-8">
             <textarea

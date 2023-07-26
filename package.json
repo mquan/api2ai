@@ -27,7 +27,7 @@
   "packageManager": "yarn@1.22.19",
   "workspaces": [
     "core",
-    "demo",
+    "server",
     "packages/*"
   ],
   "lint-staged": {
