@@ -79,7 +79,9 @@ Tips: We leverage the `summary` fields to determine which endpoint to use. You c
 
 Configure your API auth credentials under the `auth` key for applicable APIs:
 
-```
+```typescript
+// api2ai.config.ts
+
 export const configs = {
   model: "gpt-3.5-turbo-0613",
   token: process.env["OPEN_AI_KEY"],
@@ -87,8 +89,8 @@ export const configs = {
     {
       file: "path/to/your-open-api-spec.yaml",
       auth: { token: process.env["MY_API_KEY"] },
-    }
-  ]
+    },
+  ],
 };
 ```
 

@@ -43,9 +43,13 @@ const result = await agent.execute({
 });
 ```
 
-## Use the agent via API
+## Using the agent via the API
 
-To run the server in your machine, please clone the repo and follow the instruction in [Development & Contributing section]().
+To run the server in your machine, please clone the repo and follow the instruction in [Development & Contributing section](#development--contributing).
+
+We use `dotenv` to store environment variables. Please create an `.env` file in the project's root directory and add your openai key
+
+`OPEN_AI_KEY=sk-...`
 
 Start the server
 
@@ -65,20 +69,6 @@ fetch("http://localhost:5555/api/run", {
 
 Configure the `api2ai.config.js` file to add your own OAS. Please follow the existing template in this file. You may add as many files as you want.
 
-Add api2ai.config.js, use json structure and apis:
-
-even model can be configured, test referencing a remote file (github)
-{
-model: "gpt-3.5-turbo-0613",
-token: "",
-apis: [
-{
-file:,
-auth:,
-}
-]
-}
-
 ## Open API Spec
 
 **api2ai** parses valid OAS files to determine which endpoint and parameters to use. Please ensure your OAS contains descriptive parameters and requestBody schema definition. We currently support OAS version 3.0.0 and above.
@@ -87,7 +77,30 @@ Tips: We leverage the `summary` fields to determine which endpoint to use. You c
 
 ### Authentication
 
-supported schemes:
+Configure your API auth credentials under the `auth` key for applicable APIs:
+
+```typescript
+// api2ai.config.ts
+
+export const configs = {
+  model: "gpt-3.5-turbo-0613",
+  token: process.env["OPEN_AI_KEY"],
+  apis: [
+    {
+      file: "path/to/your-open-api-spec.yaml",
+      auth: { token: process.env["MY_API_KEY"] },
+    },
+  ],
+};
+```
+
+Currently, we support the following auth schemes:
+
+- Bearer auth (token in Authorization header)
+- API key
+- basic (username and password)
+
+Please ensure `securitySchemes` fields are properly defined. Please refer to the [Swagger doc](https://swagger.io/docs/specification/authentication/) for more details.
 
 ## Development & Contributing
 
