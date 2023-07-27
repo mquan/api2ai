@@ -3,8 +3,8 @@ import Operation from "./operation";
 import Security from "./security";
 
 const parseSecurities = (api: any) => {
-  // TODO: add warning to API not having any security schemes.
   if (!api.components?.securitySchemes) {
+    console.warn("No `securitySchemes` found in this API spec.");
     return {};
   }
 

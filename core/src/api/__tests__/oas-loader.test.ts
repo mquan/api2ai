@@ -43,12 +43,17 @@ describe("#parse", () => {
 
     describe("when no security schemes defined", () => {
       test("parses yaml without security", async () => {
+        console.warn = jest.fn();
+
         const noSecurityFile: string = path.join(
           __dirname,
           "../../../fixtures/oases/no-security.yaml"
         );
         const operations = await parse(noSecurityFile);
 
+        expect(console.warn).toHaveBeenCalledWith(
+          "No `securitySchemes` found in this API spec."
+        );
         expect(operations.map((op) => op.securities)).toEqual([[]]);
       });
     });
