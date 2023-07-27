@@ -108,7 +108,7 @@ Currently, we support the following auth schemes:
 - [API keys](https://swagger.io/docs/specification/authentication/api-keys/)
 - [basic auth](https://swagger.io/docs/specification/authentication/basic-authentication/)
 
-Please ensure `securitySchemes` fields are properly defined. Please refer to the [Swagger doc](https://swagger.io/docs/specification/authentication/) for more details.
+Please ensure `securitySchemes` fields are properly defined. Refer to the [Swagger doc](https://swagger.io/docs/specification/authentication/) for more details.
 
 ## Development & Contributing
 
