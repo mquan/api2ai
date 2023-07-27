@@ -1990,7 +1990,6 @@ components:
           example: "gpt-3.5-turbo"
           anyOf:
             - type: string
-            - type: string
               enum: ["gpt-4","gpt-4-0314","gpt-4-0613","gpt-4-32k","gpt-4-32k-0314","gpt-4-32k-0613","gpt-3.5-turbo","gpt-3.5-turbo-16k","gpt-3.5-turbo-0301","gpt-3.5-turbo-0613","gpt-3.5-turbo-16k-0613"]
           x-oaiTypeLabel: string
         messages:
@@ -2042,7 +2041,7 @@ components:
           nullable: true
           description: How many chat completion choices to generate for each input message.
         stream:
-          description: >
+          description: |
             If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format)
             as they become available, with the stream terminated by a `data: [DONE]` message. [Example Python code](https://github.com/openai/openai-cookbook/blob/main/examples/How_to_stream_completions.ipynb).
           type: boolean
@@ -2065,7 +2064,6 @@ components:
             The maximum number of [tokens](/tokenizer) to generate in the chat completion.
 
             The total length of input tokens and generated tokens is limited by the model's context length. [Example Python code](https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb) for counting tokens.
-          default: inf
           type: integer
         presence_penalty:
           type: number

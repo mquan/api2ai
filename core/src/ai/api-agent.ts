@@ -24,7 +24,7 @@ export default class ApiAgent {
 
   constructor({ apiKey, model, apis }: AgentInput) {
     this.apiKey = apiKey;
-    this.model = model; // TODO: support gpt-4
+    this.model = model;
     this.apis = apis;
   }
 

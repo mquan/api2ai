@@ -132,7 +132,7 @@ export default function Page() {
             {state.messages.map((message) => {
               return (
                 <tr key={message.id}>
-                  <th>{message.role}</th>
+                  <th style={{ width: 50 }}>{message.role}</th>
                   <td>{message.content}</td>
                 </tr>
               );

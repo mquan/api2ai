@@ -126,7 +126,7 @@ export default class Operation {
 
   _computeParameters(schema: any) {
     // TODO: handle query params
-    const requiredItems: string[] = [];
+    let requiredItems: string[] = [];
     const properties: any = {};
 
     // What if requestBody.properties not an object?
@@ -142,14 +142,15 @@ export default class Operation {
     }
 
     if (schema.required) {
-      requiredItems.concat(schema.required);
+      requiredItems = requiredItems.concat(schema.required);
     }
 
     const requiredSet = new Set(requiredItems);
+
     return {
       type: "object",
       properties,
-      required: requiredItems,
+      required: Array.from(requiredSet),
     };
   }
 
