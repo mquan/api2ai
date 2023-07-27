@@ -42,7 +42,13 @@ const selectSecurities = ({
   });
 };
 
-export const parse = async (filename: string) => {
+export const parse = async ({
+  filename,
+  auth,
+}: {
+  filename: string;
+  auth?: object;
+}) => {
   const api = await SwaggerParser.dereference(filename);
   const securities = parseSecurities(api);
 
@@ -62,6 +68,7 @@ export const parse = async (filename: string) => {
           baseUrl: api.servers[0].url, // TODO: allow picking baseUrl
           details,
           securities: selectedSecurities,
+          auth: auth,
         })
       );
     }

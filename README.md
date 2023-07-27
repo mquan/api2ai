@@ -33,12 +33,20 @@ const OPEN_AI_KEY = "sk-...";
 const agent = new ApiAgent({
   apiKey: OPEN_AI_KEY,
   model: "gpt-3.5-turbo-0613", // "gpt-4-0613" also works
-  api: "path/to/your/open-api-spec.yaml",
+  apis: [
+    {
+      filename: "path/to/open-api-spec.yaml",
+      auth: { token: "sk-...." },
+    },
+    {
+      filename: "path/to/another-open-api-spec.yaml",
+      auth: { username: "u$er", password: "pa$$word" },
+    },
+  ],
 });
 
 const result = await agent.execute({
   userPrompt: "Create an image of Waikiki beach",
-  context: { token: OPEN_AI_KEY },
   verbose: true, // default: false
 });
 ```
@@ -62,12 +70,13 @@ fetch("http://localhost:5555/api/run", {
   headers: { "Content-Type": "application/json" },
   method: "POST",
   body: JSON.stringify({
-    userPrompt: "",
+    userPrompt:
+      "Create an image of an astronaut swimming with dolphins in clear water ocean",
   }),
 });
 ```
 
-Configure the `api2ai.config.js` file to add your own OAS. Please follow the existing template in this file. You may add as many files as you want.
+Configure the `server/pages/api/api2ai.config.ts` file to add your own APIs. Please follow the existing template in this file. You may add as many files as you want.
 
 ## Open API Spec
 
@@ -80,8 +89,7 @@ Tips: We leverage the `summary` fields to determine which endpoint to use. You c
 Configure your API auth credentials under the `auth` key for applicable APIs:
 
 ```typescript
-// api2ai.config.ts
-
+// server/pages/api/api2ai.config.ts
 export const configs = {
   model: "gpt-3.5-turbo-0613",
   token: process.env["OPEN_AI_KEY"],
@@ -96,9 +104,9 @@ export const configs = {
 
 Currently, we support the following auth schemes:
 
-- Bearer auth (token in Authorization header)
-- API key
-- basic (username and password)
+- [Bearer authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/)
+- [API keys](https://swagger.io/docs/specification/authentication/api-keys/)
+- [basic auth](https://swagger.io/docs/specification/authentication/basic-authentication/)
 
 Please ensure `securitySchemes` fields are properly defined. Please refer to the [Swagger doc](https://swagger.io/docs/specification/authentication/) for more details.
 

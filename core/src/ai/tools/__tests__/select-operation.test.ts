@@ -35,7 +35,7 @@ describe("selectOperation", () => {
   beforeEach(async () => {
     selectOperationResponse = {};
     errorData = null;
-    operations = await parse(filename);
+    operations = await parse({ filename });
   });
 
   test("When an operation is found", async () => {

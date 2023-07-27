@@ -2,15 +2,9 @@
 import { ApiAgent } from "../../../core/index";
 import path from "path";
 import "dotenv/config";
+import { configs } from "./api2ai.config";
 
-const oasesDirectory = path.join(process.cwd(), "oases");
-const oasFilename = path.join(oasesDirectory, "open-ai.yaml");
-
-const apiAgent = new ApiAgent({
-  apiKey: process.env["OPEN_AI_KEY"] || "",
-  model: "gpt-3.5-turbo-0613",
-  apis: [oasFilename],
-});
+const apiAgent = new ApiAgent(configs);
 
 const handler = async (req, res) => {
   const userPrompt = req.body.userPrompt;
@@ -19,7 +13,6 @@ const handler = async (req, res) => {
   try {
     result = await apiAgent.execute({
       userPrompt,
-      context: { token: process.env["OPEN_AI_KEY"] },
       verbose: true,
     });
 

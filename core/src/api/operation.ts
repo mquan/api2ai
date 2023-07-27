@@ -7,6 +7,7 @@ interface OperationInput {
   path: string;
   details: any;
   securities: Security[];
+  auth?: any;
 }
 
 const EMPTY_ARGUMENT: object = {};
@@ -18,6 +19,7 @@ export default class Operation {
   path: string;
   details: any;
   securities: Security[];
+  auth: any;
 
   constructor({
     group,
@@ -26,6 +28,7 @@ export default class Operation {
     path,
     details,
     securities,
+    auth,
   }: OperationInput) {
     this.group = group;
     this.httpMethod = httpMethod.toLowerCase();
@@ -33,6 +36,7 @@ export default class Operation {
     this.path = path;
     this.details = details;
     this.securities = securities;
+    this.auth = auth;
   }
 
   operationId(): string {
@@ -55,7 +59,7 @@ export default class Operation {
 
   async sendRequest({ headers, body, authData }: any) {
     // TODO: handle auth that's not in the headers.
-    const auth = this._computeAuth(authData);
+    const auth = this._computeAuth(authData || this.auth);
     const requestHeaders = {
       ...this._requestContentType(),
       ...auth,

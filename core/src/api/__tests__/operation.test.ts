@@ -74,6 +74,7 @@ describe("Operation", () => {
   let operation: Operation;
 
   beforeEach(() => {
+    securities = [new Security({ type: "http", scheme: "basic" })];
     operation = createOperation();
   });
 
@@ -529,6 +530,59 @@ describe("Operation", () => {
               url: "http://petstore.swagger.io/v1/pets",
               method: "post",
               headers: {
+                "Content-Type": "application/json",
+                "X-Content-Medata": "foobar",
+              },
+              body,
+            },
+            response: {
+              headers: responseHeaders,
+              status: responseStatus,
+              body: { id: 1, name: "Sticky" },
+            },
+          });
+        });
+      });
+
+      describe("when operation is initialized with auth data", () => {
+        beforeEach(() => {
+          operation = new Operation({
+            group,
+            httpMethod,
+            baseUrl,
+            path,
+            details,
+            securities,
+            auth: { username: "u$er", password: "Pa$$word" },
+          });
+        });
+
+        test("makes a request with auth data", async () => {
+          const result = await operation.sendRequest({
+            headers,
+            body,
+            authData,
+          });
+
+          expect(fetch).toHaveBeenCalledWith(
+            "http://petstore.swagger.io/v1/pets",
+            {
+              method: "post",
+              body,
+              headers: {
+                Authorization: "Basic dSRlcjpQYSQkd29yZA==",
+                "Content-Type": "application/json",
+                "X-Content-Medata": "foobar",
+              },
+            }
+          );
+
+          expect(result).toEqual({
+            request: {
+              url: "http://petstore.swagger.io/v1/pets",
+              method: "post",
+              headers: {
+                Authorization: "Basic dSRlcjpQYSQkd29yZA==",
                 "Content-Type": "application/json",
                 "X-Content-Medata": "foobar",
               },

@@ -39,7 +39,7 @@ describe("parseArguments", () => {
   let operation: Operation;
 
   beforeEach(async () => {
-    operations = await parse(filename);
+    operations = await parse({ filename });
     operation = operations[1];
     errorData = null;
   });

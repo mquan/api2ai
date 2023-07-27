@@ -64,7 +64,7 @@ describe("ApiAgent", () => {
       agent = new ApiAgent({
         apiKey: openAIKey,
         model: "gpt-3.5-turbo-0613",
-        apis: [filename],
+        apis: [{ filename }],
       });
 
       // Mocked data

@@ -5,16 +5,21 @@ import { parseArguments } from "./tools/parse-arguments";
 
 const DEFAULT_CHAT_MODEL = "gpt-3.5-turbo-0613";
 
+interface ApiInput {
+  filename: string;
+  auth?: any;
+}
+
 interface AgentInput {
   apiKey: string;
   model: string;
-  apis: string[];
+  apis: ApiInput[];
 }
 
 export default class ApiAgent {
   apiKey: string;
   model: string = DEFAULT_CHAT_MODEL;
-  apis: string[] = [];
+  apis: ApiInput[] = [];
   operations: Operation[] = [];
 
   constructor({ apiKey, model, apis }: AgentInput) {
@@ -38,7 +43,7 @@ export default class ApiAgent {
     verbose = false,
   }: {
     userPrompt: string;
-    context: any;
+    context?: any;
     verbose?: boolean;
   }) {
     await this._loadOperations();

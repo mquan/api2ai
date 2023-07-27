@@ -8,7 +8,7 @@ describe("#parse", () => {
   );
 
   test("parsing open api spec into operations", async () => {
-    const operations = await parse(filename);
+    const operations = await parse({ filename });
 
     expect(operations.map((o) => o.summary())).toEqual([
       "List all pets",
@@ -17,9 +17,20 @@ describe("#parse", () => {
     ]);
   });
 
+  describe("having auth data", () => {
+    test("adding auth to every operation", async () => {
+      const auth = { token: "foobar" };
+      const operations = await parse({ filename, auth });
+
+      operations.forEach((op) => {
+        expect(op.auth).toEqual(auth);
+      });
+    });
+  });
+
   describe("securities", () => {
     test("parses security specifications", async () => {
-      const operations = await parse(filename);
+      const operations = await parse({ filename });
 
       // When operation specifies security
       expect(operations[0].securities.length).toEqual(1);
@@ -49,7 +60,7 @@ describe("#parse", () => {
           __dirname,
           "../../../fixtures/oases/no-security.yaml"
         );
-        const operations = await parse(noSecurityFile);
+        const operations = await parse({ filename: noSecurityFile });
 
         expect(console.warn).toHaveBeenCalledWith(
           "No `securitySchemes` found in this API spec."
@@ -65,7 +76,7 @@ describe("#parse", () => {
           "../../../fixtures/oases/invalid-securities.yaml"
         );
 
-        await expect(parse(invalidSecurityFile)).rejects.toThrow(
+        await expect(parse({ filename: invalidSecurityFile })).rejects.toThrow(
           "Invalid security 'basicAuth' reference."
         );
       });
