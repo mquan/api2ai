@@ -9,7 +9,7 @@ const oasFilename = path.join(oasesDirectory, "open-ai.yaml");
 const apiAgent = new ApiAgent({
   apiKey: process.env["OPEN_AI_KEY"] || "",
   model: "gpt-3.5-turbo-0613",
-  api: oasFilename,
+  apis: [oasFilename],
 });
 
 const handler = async (req, res) => {

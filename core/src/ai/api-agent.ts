@@ -8,19 +8,19 @@ const DEFAULT_CHAT_MODEL = "gpt-3.5-turbo-0613";
 interface AgentInput {
   apiKey: string;
   model: string;
-  api: string;
+  apis: string[];
 }
 
 export default class ApiAgent {
   apiKey: string;
   model: string = DEFAULT_CHAT_MODEL;
-  operations: Operation[] | null = null;
-  api: string;
+  apis: string[] = [];
+  operations: Operation[] = [];
 
-  constructor({ apiKey, model, api }: AgentInput) {
+  constructor({ apiKey, model, apis }: AgentInput) {
     this.apiKey = apiKey;
     this.model = model; // TODO: support gpt-4
-    this.api = api;
+    this.apis = apis;
   }
 
   /*
@@ -41,9 +41,7 @@ export default class ApiAgent {
     context: any;
     verbose?: boolean;
   }) {
-    if (!this.operations) {
-      this.operations = await parse(this.api);
-    }
+    await this._loadOperations();
 
     const operation = await selectOperation({
       userPrompt,
@@ -74,5 +72,16 @@ export default class ApiAgent {
     } else {
       throw new Error(`Cannot find API for '${userPrompt}'`);
     }
+  }
+
+  async _loadOperations() {
+    if (this.operations.length) {
+      return;
+    }
+
+    const apiCollections = await Promise.all(
+      this.apis.map((api) => parse(api))
+    );
+    this.operations = apiCollections.flat();
   }
 }
