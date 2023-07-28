@@ -1,5 +1,11 @@
 # @api2ai/core
 
+## 0.3.1
+
+### Patch Changes
+
+- Support multiple OAS files
+
 ## 0.3.0
 
 ### Minor Changes
