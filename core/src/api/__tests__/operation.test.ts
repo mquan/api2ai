@@ -82,6 +82,39 @@ describe("Operation", () => {
     test("returns operation full URL", () => {
       expect(operation.url()).toEqual("http://petstore.swagger.io/v1/pets");
     });
+
+    describe("when url contains path params", () => {
+      beforeEach(() => {
+        operation = new Operation({
+          group,
+          securities,
+          httpMethod: "get",
+          baseUrl,
+          path: "/pets/{petId}",
+          details: {
+            summary: "Info for a specific pet",
+            operationId: "showPetById",
+            parameters: [
+              {
+                name: "petId",
+                in: "path",
+                required: true,
+                description: "The id of the pet to retrieve",
+                schema: {
+                  type: "string",
+                },
+              },
+            ],
+          },
+        });
+      });
+
+      test("returns URL with replaced path params", () => {
+        expect(operation.url({ petId: "sticky" })).toEqual(
+          "http://petstore.swagger.io/v1/pets/sticky"
+        );
+      });
+    });
   });
 
   describe("#group", () => {

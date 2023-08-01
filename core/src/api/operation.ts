@@ -51,12 +51,35 @@ export default class Operation {
     return this.details["description"];
   }
 
-  url(): string {
-    return [this.baseUrl.replace(/\/$/, ""), this.path.replace(/^\//, "")].join(
-      "/"
-    );
+  url(parsedParams?: any): string {
+    const fullUrl: string = [
+      this.baseUrl.replace(/\/$/, ""),
+      this.path.replace(/^\//, ""),
+    ].join("/");
+
+    // Replace path params
+    const urlParams: any = this._urlParams();
+
+    if (Object.keys(urlParams).length === 0) {
+      return fullUrl;
+    }
+
+    const selectedParams = this._selectParams({
+      target: urlParams.properties,
+      allParams: parsedParams,
+    });
+
+    let url: string = fullUrl;
+    // TODO: raise an error if a required param is missing.
+    for (let param in selectedParams) {
+      url = url.replace(`{${param}}`, selectedParams[param]);
+    }
+
+    // TODO: add query param
+    return url;
   }
 
+  // TODO: accept context data for use in body and url params.
   async sendRequest({ headers, parsedParams, authData }: any) {
     // TODO: handle auth that's not in the headers.
     const auth = this._computeAuth(authData || this.auth);
@@ -65,7 +88,7 @@ export default class Operation {
       ...auth,
       ...(headers || {}),
     };
-    const url = this.url();
+    const url = this.url(parsedParams);
 
     const body = this._selectParams({
       target: this._bodyParams()?.properties,
@@ -108,8 +131,10 @@ export default class Operation {
 
   _allParams() {
     const bodyParams: any = this._bodyParams();
+    const urlParams: any = this._urlParams();
 
     const allParams = {
+      ...(urlParams?.properties || {}),
       ...(bodyParams?.properties || {}),
     };
 
@@ -134,6 +159,37 @@ export default class Operation {
       return this._computeBodyParameters(schema);
     } else {
       return null;
+    }
+  }
+
+  _urlParams() {
+    const definedParams: any = this.details?.parameters || [];
+
+    let params: any = {};
+    let requiredItems: string[] = [];
+
+    definedParams.forEach((param: any) => {
+      // TODO: save the in key (path vs. query)
+      // see if openai accept it
+
+      params[param.name] = {
+        type: param.schema?.type,
+        description: param.description,
+      };
+
+      if (param.required) {
+        requiredItems.push(param.name);
+      }
+    });
+
+    if (Object.keys(params).length) {
+      return {
+        type: "object",
+        properties: params,
+        required: requiredItems,
+      };
+    } else {
+      return EMPTY_ARGUMENT;
     }
   }
 
