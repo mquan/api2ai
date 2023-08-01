@@ -96,20 +96,27 @@ export default class Operation {
     return {
       name: this.details["operationId"].replaceAll(/[^\w\_]/g, "_"),
       description: this.summary(),
-      parameters: this._bodyParams(),
+      parameters: this._allParams(),
     };
   }
 
-  _requestContentType() {
-    if (
-      !this.details?.requestBody ||
-      this.details?.requestBody?.content["application/json"]
-    ) {
-      return { "Content-Type": "application/json" };
-    } else if (this.details?.requestBody) {
-      throw new Error(
-        'Only "application/json" requestBody type is currently supported.'
-      );
+  _allParams() {
+    const bodyParams: any = this._bodyParams();
+
+    const allParams = {
+      ...(bodyParams?.properties || {}),
+    };
+
+    const allRequired = bodyParams?.required || [];
+
+    if (Object.keys(allParams).length) {
+      return {
+        type: "object",
+        required: allRequired,
+        properties: allParams,
+      };
+    } else {
+      return EMPTY_ARGUMENT;
     }
   }
 
@@ -120,7 +127,7 @@ export default class Operation {
     if (schema && Object.keys(schema).length) {
       return this._computeBodyParameters(schema);
     } else {
-      return EMPTY_ARGUMENT;
+      return null;
     }
   }
 
@@ -150,6 +157,19 @@ export default class Operation {
       properties,
       required: Array.from(requiredSet),
     };
+  }
+
+  _requestContentType() {
+    if (
+      !this.details?.requestBody ||
+      this.details?.requestBody?.content["application/json"]
+    ) {
+      return { "Content-Type": "application/json" };
+    } else if (this.details?.requestBody) {
+      throw new Error(
+        'Only "application/json" requestBody type is currently supported.'
+      );
+    }
   }
 
   _computeAuth(data: any) {
