@@ -6,7 +6,7 @@
 
 ## Features
 
-**api2ai** lets you to interface with any API using English, or any natural language.
+**api2ai** lets you interface with any API using plain English or any natural language.
 
 - Automatically parses open API spec and auth schemes
 - Selects endpoint and parses arguments provided in user prompt
