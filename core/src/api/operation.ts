@@ -94,9 +94,9 @@ export default class Operation {
 
   toFunction() {
     return {
-      name: this.details["operationId"].replaceAll("-", "_"),
+      name: this.details["operationId"].replaceAll(/[^\w\_]/g, "_"),
       description: this.summary(),
-      parameters: this._parameters(),
+      parameters: this._bodyParams(),
     };
   }
 
@@ -113,23 +113,21 @@ export default class Operation {
     }
   }
 
-  _parameters() {
+  _bodyParams() {
     const schema =
       this.details?.requestBody?.content["application/json"]?.schema;
 
     if (schema && Object.keys(schema).length) {
-      return this._computeParameters(schema);
+      return this._computeBodyParameters(schema);
     } else {
       return EMPTY_ARGUMENT;
     }
   }
 
-  _computeParameters(schema: any) {
-    // TODO: handle query params
+  _computeBodyParameters(schema: any) {
     let requiredItems: string[] = [];
     const properties: any = {};
 
-    // What if requestBody.properties not an object?
     for (let propName in schema.properties) {
       const { required: isRequired, ...remainingProperty } =
         schema.properties[propName];

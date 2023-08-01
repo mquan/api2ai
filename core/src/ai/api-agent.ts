@@ -56,15 +56,15 @@ export default class ApiAgent {
     });
 
     if (operation) {
-      const args = await parseArguments({
+      const bodyParams = await parseArguments({
         userPrompt,
         model: this.model,
         openaiApiKey: this.apiKey,
-        operation,
+        functionSpec: operation.toFunction(),
       });
 
       const apiResult = await operation.sendRequest({
-        body: args,
+        body: bodyParams,
         headers: context?.headers || {},
         authData: context,
       });

@@ -1,7 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
 
-import Operation from "../../api/operation";
-
 const SYSTEM_PROMPT =
   "Parse user input into arguments. Leave missing parameters blank. Do not make up any information not in user input.";
 
@@ -9,17 +7,15 @@ interface ParseArgumentsInput {
   userPrompt: string;
   openaiApiKey: string;
   model: string;
-  operation: Operation;
+  functionSpec: any;
 }
 
 export const parseArguments = async ({
   userPrompt,
   model,
   openaiApiKey,
-  operation,
+  functionSpec,
 }: ParseArgumentsInput) => {
-  const functionSpec = operation.toFunction();
-
   // Skip parsing args if there's none.
   if (Object.keys(functionSpec.parameters).length === 0) {
     return {};
