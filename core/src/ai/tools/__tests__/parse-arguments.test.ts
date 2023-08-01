@@ -37,10 +37,12 @@ describe("parseArguments", () => {
   );
   let operations: Operation[];
   let operation: Operation;
+  let functionSpec: any;
 
   beforeEach(async () => {
     operations = await parse({ filename });
     operation = operations[1];
+    functionSpec = operation.toFunction();
     errorData = null;
   });
 
@@ -48,7 +50,7 @@ describe("parseArguments", () => {
     parseArgsResponse = {
       data: {
         choices: [
-          { message: { function_call: { arguments: { name: "Sticky" } } } },
+          { message: { function_call: { arguments: '{ "name": "Sticky" }' } } },
         ],
       },
     };
@@ -57,7 +59,7 @@ describe("parseArguments", () => {
       userPrompt: "Add a new pet named Sticky",
       openaiApiKey: "secretKey",
       model: "gpt-3.5-turbo-0613",
-      operation,
+      functionSpec,
     });
 
     expect(result).toEqual({ name: "Sticky" });
@@ -66,7 +68,7 @@ describe("parseArguments", () => {
   test("when there are no arguments", async () => {
     parseArgsResponse = {
       data: {
-        choices: [{ message: { function_call: { arguments: {} } } }],
+        choices: [{ message: { function_call: { arguments: "{}" } } }],
       },
     };
 
@@ -74,7 +76,7 @@ describe("parseArguments", () => {
       userPrompt: "Add a new pet named Sticky",
       openaiApiKey: "secretKey",
       model: "gpt-3.5-turbo-0613",
-      operation,
+      functionSpec,
     });
 
     expect(result).toEqual({});
@@ -83,6 +85,7 @@ describe("parseArguments", () => {
   describe("when operation does not have any parameters", () => {
     beforeEach(() => {
       operation = operations[0];
+      functionSpec = operation.toFunction();
     });
 
     test("does not hit AI and return empty object", async () => {
@@ -90,7 +93,7 @@ describe("parseArguments", () => {
         userPrompt: "Add a new pet named Sticky",
         openaiApiKey: "secretKey",
         model: "gpt-3.5-turbo-0613",
-        operation,
+        functionSpec,
       });
 
       expect(result).toEqual({});
@@ -105,7 +108,7 @@ describe("parseArguments", () => {
         userPrompt: "Add a new pet named Sticky",
         openaiApiKey: "secretKey",
         model: "gpt-3.5-turbo-0613",
-        operation,
+        functionSpec,
       })
     ).rejects.toThrow("There's an error parsing arguments: A network error");
   });
@@ -130,7 +133,7 @@ describe("parseArguments", () => {
         userPrompt: "Add a new pet named Sticky",
         openaiApiKey: "secretKey",
         model: "gpt-3.5-turbo-0613",
-        operation,
+        functionSpec,
       })
     ).rejects.toThrow(
       `There's an error parsing arguments: Response status 404, data: ${JSON.stringify(

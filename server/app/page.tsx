@@ -28,7 +28,7 @@ const renderContent = (data) => {
           </strong>
         </p>
         <pre>
-          <code>{JSON.stringify(data.response, null, "\t")}</code>
+          <code>{JSON.stringify(data.response, null, 2)}</code>
         </pre>
       </div>
     );
@@ -36,7 +36,7 @@ const renderContent = (data) => {
     return (
       <div>
         <pre>
-          <code>{JSON.stringify(data, null, "\t")}</code>
+          <code>{JSON.stringify(data, null, 2)}</code>
         </pre>
       </div>
     );
