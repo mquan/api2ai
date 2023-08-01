@@ -50,7 +50,7 @@ describe("parseArguments", () => {
     parseArgsResponse = {
       data: {
         choices: [
-          { message: { function_call: { arguments: { name: "Sticky" } } } },
+          { message: { function_call: { arguments: '{ "name": "Sticky" }' } } },
         ],
       },
     };
@@ -68,7 +68,7 @@ describe("parseArguments", () => {
   test("when there are no arguments", async () => {
     parseArgsResponse = {
       data: {
-        choices: [{ message: { function_call: { arguments: {} } } }],
+        choices: [{ message: { function_call: { arguments: "{}" } } }],
       },
     };
 

@@ -395,24 +395,30 @@ describe("Operation", () => {
 
   describe("#sendRequest", () => {
     let headers: Object;
+    let parsedParams: any;
     let body: Object;
+    let expectedBody: any;
     let authData: any;
 
     beforeEach(() => {
       headers = { "X-Content-Medata": "foobar" };
-      body: {
-        name: "Sticky";
-      }
+      body = { name: "Sticky" };
+      expectedBody = JSON.stringify(body);
+      parsedParams = { ...body, foo: "bar", a: 1 };
       authData = { username: "u$er", password: "Pa$$word" };
       petResponse = { id: 1, name: "Sticky" };
     });
 
     test("makes a request", async () => {
-      const result = await operation.sendRequest({ headers, body, authData });
+      const result = await operation.sendRequest({
+        headers,
+        parsedParams,
+        authData,
+      });
 
       expect(fetch).toHaveBeenCalledWith("http://petstore.swagger.io/v1/pets", {
         method: "post",
-        body,
+        body: expectedBody,
         headers: {
           Authorization: "Basic dSRlcjpQYSQkd29yZA==",
           "Content-Type": "application/json",
@@ -429,7 +435,7 @@ describe("Operation", () => {
             "Content-Type": "application/json",
             "X-Content-Medata": "foobar",
           },
-          body,
+          body: expectedBody,
         },
         response: {
           headers: responseHeaders,
@@ -452,7 +458,11 @@ describe("Operation", () => {
       });
 
       test("makes a request without body", async () => {
-        const result = await operation.sendRequest({ headers, body, authData });
+        const result = await operation.sendRequest({
+          headers,
+          parsedParams,
+          authData,
+        });
 
         expect(fetch).toHaveBeenCalledWith(
           "http://petstore.swagger.io/v1/pets",
@@ -493,7 +503,7 @@ describe("Operation", () => {
       describe("when basic auth is required", () => {
         test("throws error", async () => {
           await expect(
-            operation.sendRequest({ headers, body, authData })
+            operation.sendRequest({ headers, parsedParams, authData })
           ).rejects.toThrow(
             "`username` and `password` are required for basic auth"
           );
@@ -509,7 +519,7 @@ describe("Operation", () => {
         test("makes request without authorization data", async () => {
           const result = await operation.sendRequest({
             headers,
-            body,
+            parsedParams,
             authData,
           });
 
@@ -517,7 +527,7 @@ describe("Operation", () => {
             "http://petstore.swagger.io/v1/pets",
             {
               method: "post",
-              body,
+              body: expectedBody,
               headers: {
                 "Content-Type": "application/json",
                 "X-Content-Medata": "foobar",
@@ -533,7 +543,7 @@ describe("Operation", () => {
                 "Content-Type": "application/json",
                 "X-Content-Medata": "foobar",
               },
-              body,
+              body: expectedBody,
             },
             response: {
               headers: responseHeaders,
@@ -560,7 +570,7 @@ describe("Operation", () => {
         test("makes a request with auth data", async () => {
           const result = await operation.sendRequest({
             headers,
-            body,
+            parsedParams,
             authData,
           });
 
@@ -568,7 +578,7 @@ describe("Operation", () => {
             "http://petstore.swagger.io/v1/pets",
             {
               method: "post",
-              body,
+              body: expectedBody,
               headers: {
                 Authorization: "Basic dSRlcjpQYSQkd29yZA==",
                 "Content-Type": "application/json",
@@ -586,7 +596,7 @@ describe("Operation", () => {
                 "Content-Type": "application/json",
                 "X-Content-Medata": "foobar",
               },
-              body,
+              body: expectedBody,
             },
             response: {
               headers: responseHeaders,

@@ -34,9 +34,9 @@ export const parseArguments = async ({
       functions: [functionSpec],
     });
 
-    return (
-      chatCompletion.data?.choices[0]?.message?.function_call?.arguments || null
-    );
+    const args =
+      chatCompletion.data?.choices[0]?.message?.function_call?.arguments;
+    return args ? JSON.parse(args) : null;
   } catch (error: any) {
     let errorMessage: string;
 

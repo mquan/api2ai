@@ -57,7 +57,7 @@ export default class Operation {
     );
   }
 
-  async sendRequest({ headers, body, authData }: any) {
+  async sendRequest({ headers, parsedParams, authData }: any) {
     // TODO: handle auth that's not in the headers.
     const auth = this._computeAuth(authData || this.auth);
     const requestHeaders = {
@@ -66,9 +66,15 @@ export default class Operation {
       ...(headers || {}),
     };
     const url = this.url();
+
+    const body = this._selectParams({
+      target: this._bodyParams()?.properties,
+      allParams: parsedParams,
+    });
+
     const requestBody = ["get", "head"].includes(this.httpMethod)
       ? {}
-      : { body };
+      : { body: JSON.stringify(body) };
 
     const response = await fetch(url, {
       method: this.httpMethod,
@@ -129,6 +135,22 @@ export default class Operation {
     } else {
       return null;
     }
+  }
+
+  _selectParams({ target, allParams }: any) {
+    if (!target) {
+      return {};
+    }
+
+    let result: any = {};
+
+    for (let param in allParams) {
+      if (target[param] && allParams[param]) {
+        result[param] = allParams[param];
+      }
+    }
+
+    return result;
   }
 
   _computeBodyParameters(schema: any) {

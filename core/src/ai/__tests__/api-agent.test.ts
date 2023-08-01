@@ -71,7 +71,9 @@ describe("ApiAgent", () => {
       parseArgsResponse = {
         data: {
           choices: [
-            { message: { function_call: { arguments: { name: "Sticky" } } } },
+            {
+              message: { function_call: { arguments: '{ "name": "Sticky" }' } },
+            },
           ],
         },
       };
@@ -120,7 +122,7 @@ describe("ApiAgent", () => {
               Authorization: "Bearer my-token",
               "Content-Type": "application/json",
             },
-            body: { name: "Sticky" },
+            body: JSON.stringify({ name: "Sticky" }),
           },
           response: {
             headers: responseHeaders,

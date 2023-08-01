@@ -56,7 +56,7 @@ export default class ApiAgent {
     });
 
     if (operation) {
-      const bodyParams = await parseArguments({
+      const parsedParams = await parseArguments({
         userPrompt,
         model: this.model,
         openaiApiKey: this.apiKey,
@@ -64,7 +64,7 @@ export default class ApiAgent {
       });
 
       const apiResult = await operation.sendRequest({
-        body: bodyParams,
+        parsedParams,
         headers: context?.headers || {},
         authData: context,
       });
