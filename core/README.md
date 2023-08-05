@@ -1,6 +1,6 @@
 # ☁️⇨🤖🧠 api2ai
 
-⚡ Create an API assistant from any Open API Spec ⚡
+⚡ Create an API assistant from any OpenAPI Spec ⚡
 
 <img width="680" alt="api2ai demo with multiple APIs" src="https://github.com/mquan/api2ai/assets/138784/6719fdb2-6687-4768-a599-d61d7ab454a6">
 
@@ -8,7 +8,7 @@
 
 **api2ai** lets you interface with any API using plain English or any natural language.
 
-- Automatically parses open API spec and auth schemes
+- Automatically parses OpenAPI spec and auth schemes
 - Selects endpoint and parses arguments provided in user prompt
 - Invokes the API call and return the response
 - Comes with a local API
@@ -39,7 +39,7 @@ const agent = new ApiAgent({
       auth: { token: "sk-...." },
     },
     {
-      filename: "path/to/another-open-api-spec.yaml",
+      filename: "url/to/another-open-api-spec.yaml",
       auth: { username: "u$er", password: "pa$$word" },
     },
   ],
@@ -78,7 +78,7 @@ fetch("http://localhost:5555/api/run", {
 
 Configure the `server/pages/api/api2ai.config.ts` file to add your own APIs. Please follow the existing template in this file. You may add as many files as you want.
 
-## Open API Spec
+## OpenAPI Spec
 
 **api2ai** parses valid OAS files to determine which endpoint and parameters to use. Please ensure your OAS contains descriptive parameters and requestBody schema definition. We currently support OAS version 3.0.0 and above.
 
