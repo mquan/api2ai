@@ -9,7 +9,7 @@
 **api2ai** lets you interface with any API using plain English or any natural language.
 
 - Automatically parses OpenAPI spec and auth schemes
-- Selects endpoint and parses arguments provided in user prompt
+- Selects endpoint and parses arguments provided in user prompt into query and body params.
 - Invokes the API call and return the response
 - Comes with a local API
 
@@ -49,6 +49,33 @@ const result = await agent.execute({
   userPrompt: "Create an image of Waikiki beach",
   verbose: true, // default: false
 });
+
+// Sanitized output of result
+{
+  "userPrompt": "Create an image of Waikiki beach",
+  "selectedOperation": "createImage",
+  "request": {
+    "url": "https://api.openai.com/v1/images/generations",
+    "method": "post",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer sk-..."
+    },
+    "body": "{\"prompt\":\"Waikiki beach\"}"
+  },
+  "response": {
+    "headers": {},
+    "status": 200,
+    "body": {
+      "created": 1691253354,
+      "data": [
+        {
+          "url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-mSgbuBJYTxIWjjopcJpDnkwh/user-.../img-ZsEtynyCxFIYTlDfWor0mTJP.png?st=2023-08-05T15%3A35%3A54Z&se=2023-08-05T17%3A35%3A54Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-08-04T18%3A09%3A06Z&ske=2023-08-05T18%3A09%3A06Z&sks=b&skv=2021-08-06&sig=ZYKOP%2BGlz60di2sCiHMWL5ssruXyGMlAUFmQx/aXmqA%3D"
+        }
+      ]
+    }
+  }
+}
 ```
 
 ## Using the agent via the API
@@ -76,7 +103,7 @@ fetch("http://localhost:5555/api/run", {
 });
 ```
 
-Configure the `server/pages/api/api2ai.config.ts` file to add your own APIs. Please follow the existing template in this file. You may add as many files as you want.
+Configure the `server/pages/api/api2ai.config.ts` file to add your own APIs. Follow the existing template in this file. You may add as many files as you want.
 
 ## OpenAPI Spec
 
@@ -106,7 +133,7 @@ Currently, we support the following auth schemes:
 
 - [Bearer authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/)
 - [API keys](https://swagger.io/docs/specification/authentication/api-keys/)
-- [basic auth](https://swagger.io/docs/specification/authentication/basic-authentication/)
+- [Basic auth](https://swagger.io/docs/specification/authentication/basic-authentication/)
 
 Please ensure `securitySchemes` fields are properly defined. Refer to the [Swagger doc](https://swagger.io/docs/specification/authentication/) for more details.
 
