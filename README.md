@@ -103,7 +103,7 @@ fetch("http://localhost:5555/api/run", {
 });
 ```
 
-Configure the `server/pages/api/api2ai.config.ts` file to add your own APIs. Follow the existing template in this file. You may add as many files as you want.
+Configure the [server/pages/api/api2ai.config.ts] file to add your own APIs. Follow the existing template in this file. You may add as many files as you want.
 
 ## OpenAPI Spec
 

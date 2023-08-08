@@ -1,8 +1,8 @@
 import path from "path";
 import "dotenv/config";
 
-const oasesDirectory = path.join(process.cwd(), "oases");
-const openAIFilename = path.join(oasesDirectory, "open-ai.yaml");
+const apiSpecDirectory = path.join(process.cwd(), "api-specs");
+const openAIFilename = path.join(apiSpecDirectory, "open-ai.yaml");
 
 export const configs = {
   apiKey: process.env["OPEN_AI_KEY"] || "",
