@@ -16,7 +16,6 @@ const handler = async (req, res) => {
       verbose: true,
     });
 
-    console.log(JSON.stringify(result, null, 2));
     res.status(200).json(result);
   } catch (error: any) {
     res.status(422).json({

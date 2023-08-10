@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "openai": "^3.3.0",
+    "postman-to-openapi": "3.0.1",
     "swagger-parser": "^10.0.3"
   }
 }

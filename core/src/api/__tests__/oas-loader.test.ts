@@ -2,10 +2,11 @@ import path from "path";
 import { parse } from "../oas-loader";
 
 describe("#parse", () => {
-  const filename: string = path.join(
-    __dirname,
-    "../../../fixtures/oases/petstore.yaml"
-  );
+  let filename: string;
+
+  beforeEach(() => {
+    filename = path.join(__dirname, "../../../fixtures/oases/petstore.yaml");
+  });
 
   test("parsing open api spec into operations", async () => {
     const operations = await parse({ filename });
@@ -80,6 +81,29 @@ describe("#parse", () => {
           "Invalid security 'basicAuth' reference."
         );
       });
+    });
+  });
+
+  describe("when file is a postman collection", () => {
+    beforeEach(() => {
+      filename = path.join(__dirname, "../../../fixtures/postman/openai.json");
+    });
+
+    test("converts and parses file as OAS", async () => {
+      const auth = { token: "sk-secret" };
+
+      const operations = await parse({ filename, auth });
+
+      expect(operations.map((o) => o.summary())).toEqual([
+        "Create chat message completion",
+      ]);
+
+      expect(operations[0].operationId()).toEqual(
+        "createChatMessageCompletion"
+      );
+      expect(operations[0].securities.length).toEqual(1);
+      expect(operations[0].securities[0].type).toEqual("http");
+      expect(operations[0].securities[0].scheme).toEqual("bearer");
     });
   });
 });

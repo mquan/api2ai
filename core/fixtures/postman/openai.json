@@ -1,0 +1,197 @@
+{
+  "info": {
+    "_postman_id": "90abb798-cb85-43cb-ba3a-ae7941e968da",
+    "name": "OpenAI",
+    "description": "[The OpenAI API](https://beta.openai.com/docs/introduction/overview) can be applied to virtually any task that involves understanding or generating natural language or code. We offer a spectrum of [models](https://beta.openai.com/docs/models) with different levels of power suitable for different tasks, as well as the ability to [fine-tune](https://beta.openai.com/docs/guides/fine-tuning) your own custom models. These models can be used for everything from content generation to semantic search and classification.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "28827358",
+    "_collection_link": "https://www.postman.com/devrel/workspace/openai/collection/13183464-90abb798-cb85-43cb-ba3a-ae7941e968da?action=share&creator=28827358&source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "Create chat message completion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = null;",
+                  "",
+                  "try {",
+                  "    jsonData = pm.response.json();",
+                  "    pm.test(\"Check if response is valid JSON\", function() {    ",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    pm.visualizer.set(`<textarea style=\"width: 100vw; height: 100vh; font-family: monospace;\">${pm.response.json().choices[0].message.content}</textarea>`);",
+                  "});",
+                  "} catch (a) {",
+                  "    console.log(\"Dealing with an SSE stream ... \")",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"model\": \"gpt-3.5-turbo\",\n    \"messages\": [\n        {\n            \"role\": \"user\",\n            \"content\": \"Who won the world series in 2020?\"\n        },\n        {\n            \"role\": \"assistant\",\n            \"content\": \"The Los Angeles Dodgers won the World Series in 2020.\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": \"Where was it played?\"\n        }\n    ],\n    \"temperature\": 1,\n    \"top_p\": 1,\n    \"n\": 1,\n    \"stream\": false,\n    \"max_tokens\": 250,\n    \"presence_penalty\": 0,\n    \"frequency_penalty\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chat/completions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chat",
+                "completions"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Create chat message completion",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"model\": \"gpt-3.5-turbo\",\n    \"messages\": [\n        {\n            \"role\": \"user\",\n            \"content\": \"Who won the world series in 2020?\"\n        },\n        {\n            \"role\": \"assistant\",\n            \"content\": \"The Los Angeles Dodgers won the World Series in 2020.\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": \"Where was it played?\"\n        }\n    ],\n    \"temperature\": 1,\n    \"top_p\": 1,\n    \"n\": 1,\n    \"stream\": false,\n    \"max_tokens\": 250,\n    \"presence_penalty\": 0,\n    \"frequency_penalty\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/chat/completions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "chat",
+                    "completions"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 20 Mar 2023 23:50:57 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "360"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, must-revalidate"
+                },
+                {
+                  "key": "Openai-Model",
+                  "value": "gpt-3.5-turbo-0301"
+                },
+                {
+                  "key": "Openai-Organization",
+                  "value": "user-ydfxhof885ycvb52zjw5ly51"
+                },
+                {
+                  "key": "Openai-Processing-Ms",
+                  "value": "1800"
+                },
+                {
+                  "key": "Openai-Version",
+                  "value": "2020-10-01"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=15724800; includeSubDomains"
+                },
+                {
+                  "key": "X-Ratelimit-Limit-Requests",
+                  "value": "3500"
+                },
+                {
+                  "key": "X-Ratelimit-Remaining-Requests",
+                  "value": "3499"
+                },
+                {
+                  "key": "X-Ratelimit-Reset-Requests",
+                  "value": "17ms"
+                },
+                {
+                  "key": "X-Request-Id",
+                  "value": "8506a913c39e706fede784458b254ca7"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"id\": \"chatcmpl-6wJZ9Ebt8puAO4zW3zUpgFwS8BfJB\",\n    \"object\": \"chat.completion\",\n    \"created\": 1679356255,\n    \"model\": \"gpt-3.5-turbo-0301\",\n    \"usage\": {\n        \"prompt_tokens\": 45,\n        \"completion_tokens\": 19,\n        \"total_tokens\": 64\n    },\n    \"choices\": [\n        {\n            \"message\": {\n                \"role\": \"assistant\",\n                \"content\": \"The 2020 World Series was played in Arlington, Texas, at Globe Life Field.\"\n            },\n            \"finish_reason\": \"stop\",\n            \"index\": 0\n        }\n    ]\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.openai.com/v1"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
