@@ -1,5 +1,11 @@
 # @api2ai/core
 
+## 0.6.0
+
+### Patch Changes
+
+- Upgrade openai version 4
+
 ## 0.5.0
 
 ### Minor Changes
