@@ -19,10 +19,12 @@ global.fetch = jest.fn(() =>
 ) as jest.Mock;
 
 jest.mock("openai", () => {
-  return {
-    OpenAIApi: jest.fn().mockImplementation(() => {
-      return {
-        createChatCompletion: ({ messages }: { messages: any }) => {
+  return class MockedOpenAI {
+    apiKey: string;
+
+    chat: any = {
+      completions: {
+        create: ({ model, messages, functions }: any) => {
           if (errorData) {
             throw errorData;
           }
@@ -38,9 +40,12 @@ jest.mock("openai", () => {
             return Promise.resolve(selectOperationResponse);
           }
         },
-      };
-    }),
-    Configuration: jest.fn().mockImplementation(() => {}),
+      },
+    };
+
+    constructor({ apiKey }: any) {
+      this.apiKey = apiKey;
+    }
   };
 });
 
@@ -69,17 +74,15 @@ describe("ApiAgent", () => {
 
       // Mocked data
       parseArgsResponse = {
-        data: {
-          choices: [
-            {
-              message: { function_call: { arguments: '{ "name": "Sticky" }' } },
-            },
-          ],
-        },
+        choices: [
+          {
+            message: { function_call: { arguments: '{ "name": "Sticky" }' } },
+          },
+        ],
       };
 
       selectOperationResponse = {
-        data: { choices: [{ message: { content: "Create a pet." } }] },
+        choices: [{ message: { content: "Create a pet." } }],
       };
 
       petResponse = { id: 1, name: "Sticky" };

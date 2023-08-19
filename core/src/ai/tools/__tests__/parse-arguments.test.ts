@@ -9,10 +9,12 @@ let parseArgsResponse: any;
 let errorData: any;
 
 jest.mock("openai", () => {
-  return {
-    OpenAIApi: jest.fn().mockImplementation(() => {
-      return {
-        createChatCompletion: ({ messages }: { messages: any }) => {
+  return class MockedOpenAI {
+    apiKey: string;
+
+    chat: any = {
+      completions: {
+        create: ({ model, messages, functions }: any) => {
           if (errorData) {
             throw errorData;
           }
@@ -24,9 +26,12 @@ jest.mock("openai", () => {
             return Promise.resolve(parseArgsResponse);
           }
         },
-      };
-    }),
-    Configuration: jest.fn().mockImplementation(() => {}),
+      },
+    };
+
+    constructor({ apiKey }: any) {
+      this.apiKey = apiKey;
+    }
   };
 });
 
@@ -48,11 +53,9 @@ describe("parseArguments", () => {
 
   test("when arguments can be parsed successfully", async () => {
     parseArgsResponse = {
-      data: {
-        choices: [
-          { message: { function_call: { arguments: '{ "name": "Sticky" }' } } },
-        ],
-      },
+      choices: [
+        { message: { function_call: { arguments: '{ "name": "Sticky" }' } } },
+      ],
     };
 
     const result = await parseArguments({
@@ -67,9 +70,7 @@ describe("parseArguments", () => {
 
   test("when there are no arguments", async () => {
     parseArgsResponse = {
-      data: {
-        choices: [{ message: { function_call: { arguments: "{}" } } }],
-      },
+      choices: [{ message: { function_call: { arguments: "{}" } } }],
     };
 
     const result = await parseArguments({
@@ -100,33 +101,8 @@ describe("parseArguments", () => {
     });
   });
 
-  test("When there is a generic error with the request", async () => {
-    errorData = new Error("A network error");
-
-    await expect(
-      parseArguments({
-        userPrompt: "Add a new pet named Sticky",
-        openaiApiKey: "secretKey",
-        model: "gpt-3.5-turbo-0613",
-        functionSpec,
-      })
-    ).rejects.toThrow("There's an error parsing arguments: A network error");
-  });
-
-  test("When there is an openAI error", async () => {
-    errorData = {
-      response: {
-        status: 404,
-        data: {
-          error: {
-            message: "The model `gpt-3.5-turbo-06139` does not exist",
-            type: "invalid_request_error",
-            param: null,
-            code: null,
-          },
-        },
-      },
-    };
+  test("When there is an error with the request", async () => {
+    errorData = new Error("The model `gpt-3.5-turbo-06139` does not exist");
 
     await expect(
       parseArguments({
@@ -136,9 +112,7 @@ describe("parseArguments", () => {
         functionSpec,
       })
     ).rejects.toThrow(
-      `There's an error parsing arguments: Response status 404, data: ${JSON.stringify(
-        errorData.response.data
-      )}`
+      "There's an error parsing arguments: The model `gpt-3.5-turbo-06139` does not exist"
     );
   });
 });

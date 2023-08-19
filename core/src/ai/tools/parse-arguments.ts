@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 
 const SYSTEM_PROMPT =
   "Parse user input into arguments. Leave missing parameters blank. Do not make up any information not in user input.";
@@ -22,10 +22,9 @@ export const parseArguments = async ({
   }
 
   try {
-    const aiConfig = new Configuration({ apiKey: openaiApiKey });
-    const openai = new OpenAIApi(aiConfig);
+    const openai = new OpenAI({ apiKey: openaiApiKey });
 
-    const chatCompletion: any = await openai.createChatCompletion({
+    const chatCompletion: any = await openai.chat.completions.create({
       model,
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
@@ -34,20 +33,9 @@ export const parseArguments = async ({
       functions: [functionSpec],
     });
 
-    const args =
-      chatCompletion.data?.choices[0]?.message?.function_call?.arguments;
+    const args = chatCompletion.choices[0]?.message?.function_call?.arguments;
     return args ? JSON.parse(args) : null;
   } catch (error: any) {
-    let errorMessage: string;
-
-    if (error.response) {
-      errorMessage = `Response status ${
-        error.response.status
-      }, data: ${JSON.stringify(error.response.data)}`;
-    } else {
-      errorMessage = error.message;
-    }
-
-    throw new Error(`There's an error parsing arguments: ${errorMessage}`);
+    throw new Error(`There's an error parsing arguments: ${error.message}`);
   }
 };

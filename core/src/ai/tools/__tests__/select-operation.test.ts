@@ -7,10 +7,12 @@ let selectOperationResponse: any;
 let errorData: any;
 
 jest.mock("openai", () => {
-  return {
-    OpenAIApi: jest.fn().mockImplementation(() => {
-      return {
-        createChatCompletion: ({ messages }: { messages: any }) => {
+  return class MockedOpenAI {
+    apiKey: string;
+
+    chat: any = {
+      completions: {
+        create: ({ model, messages, functions }: any) => {
           if (errorData) {
             throw errorData;
           }
@@ -19,9 +21,12 @@ jest.mock("openai", () => {
             return Promise.resolve(selectOperationResponse);
           }
         },
-      };
-    }),
-    Configuration: jest.fn().mockImplementation(() => {}),
+      },
+    };
+
+    constructor({ apiKey }: any) {
+      this.apiKey = apiKey;
+    }
   };
 });
 
@@ -40,7 +45,7 @@ describe("selectOperation", () => {
 
   test("When an operation is found", async () => {
     selectOperationResponse = {
-      data: { choices: [{ message: { content: "Create a pet." } }] },
+      choices: [{ message: { content: "Create a pet." } }],
     };
     const result = await selectOperation({
       userPrompt: "Add a new pet named Sticky",
@@ -53,7 +58,7 @@ describe("selectOperation", () => {
   });
 
   test("When the operation cannot be found", async () => {
-    selectOperationResponse = { data: { choices: [] } };
+    selectOperationResponse = { choices: [] };
     const result = await selectOperation({
       userPrompt: "Add a new pet named Sticky",
       openaiApiKey: "secretKey",
@@ -66,7 +71,7 @@ describe("selectOperation", () => {
 
   test("When AI hallucinates", async () => {
     selectOperationResponse = {
-      data: { choices: [{ message: { content: "Visit a zoo" } }] },
+      choices: [{ message: { content: "Visit a zoo" } }],
     };
 
     const result = await selectOperation({
@@ -79,33 +84,8 @@ describe("selectOperation", () => {
     expect(result).toEqual(null);
   });
 
-  test("When there is a generic error with the request", async () => {
-    errorData = new Error("A network error");
-
-    await expect(
-      selectOperation({
-        userPrompt: "Add a new pet named Sticky",
-        openaiApiKey: "secretKey",
-        model: "gpt-3.5-turbo-0613",
-        operations,
-      })
-    ).rejects.toThrow("There's an error selecting operation: A network error");
-  });
-
-  test("When there is an openAI error", async () => {
-    errorData = {
-      response: {
-        status: 404,
-        data: {
-          error: {
-            message: "The model `gpt-3.5-turbo-06139` does not exist",
-            type: "invalid_request_error",
-            param: null,
-            code: null,
-          },
-        },
-      },
-    };
+  test("When there is an error with the request", async () => {
+    errorData = new Error("The model `gpt-3.5-turbo-06139` does not exist");
 
     await expect(
       selectOperation({
@@ -115,9 +95,7 @@ describe("selectOperation", () => {
         operations,
       })
     ).rejects.toThrow(
-      `There's an error selecting operation: Response status 404, data: ${JSON.stringify(
-        errorData.response.data
-      )}`
+      "There's an error selecting operation: The model `gpt-3.5-turbo-06139` does not exist"
     );
   });
 });
