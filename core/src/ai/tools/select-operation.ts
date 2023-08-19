@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 
 import Operation from "../../api/operation";
 
@@ -28,20 +28,21 @@ export const selectOperation = async ({
   openaiApiKey,
   model,
 }: SelectOperationInput) => {
-  const aiConfig = new Configuration({ apiKey: openaiApiKey });
-  const openai = new OpenAIApi(aiConfig);
+  const openai = new OpenAI({ apiKey: openaiApiKey });
 
   const prompt = selectOperationPrompt({ operations, userPrompt });
 
   try {
-    const chatCompletion: any = await openai.createChatCompletion({
+    const chatCompletion: any = await openai.chat.completions.create({
       model,
       messages: [{ role: "user", content: prompt }],
     });
 
-    if (chatCompletion.data?.choices?.length) {
-      const matchedSummary =
-        chatCompletion.data.choices[0].message.content.replace(/\.$/, "");
+    if (chatCompletion.choices?.length) {
+      const matchedSummary = chatCompletion.choices[0].message.content.replace(
+        /\.$/,
+        ""
+      );
       return (
         operations.find((op: Operation) => op.summary() === matchedSummary) ||
         null
@@ -52,10 +53,10 @@ export const selectOperation = async ({
   } catch (error: any) {
     let errorMessage: string;
 
-    if (error.response) {
+    if (error instanceof OpenAI.APIError) {
       errorMessage = `Response status ${
-        error.response.status
-      }, data: ${JSON.stringify(error.response.data)}`;
+        error.status
+      }, message: ${JSON.stringify(error.message)}`;
     } else {
       errorMessage = error.message;
     }
