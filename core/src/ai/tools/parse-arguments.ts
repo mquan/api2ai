@@ -36,16 +36,6 @@ export const parseArguments = async ({
     const args = chatCompletion.choices[0]?.message?.function_call?.arguments;
     return args ? JSON.parse(args) : null;
   } catch (error: any) {
-    let errorMessage: string;
-
-    if (error instanceof OpenAI.APIError) {
-      errorMessage = `Response status ${
-        error.status
-      }, message: ${JSON.stringify(error.message)}`;
-    } else {
-      errorMessage = error.message;
-    }
-
-    throw new Error(`There's an error parsing arguments: ${errorMessage}`);
+    throw new Error(`There's an error parsing arguments: ${error.message}`);
   }
 };

@@ -51,16 +51,6 @@ export const selectOperation = async ({
       return null;
     }
   } catch (error: any) {
-    let errorMessage: string;
-
-    if (error instanceof OpenAI.APIError) {
-      errorMessage = `Response status ${
-        error.status
-      }, message: ${JSON.stringify(error.message)}`;
-    } else {
-      errorMessage = error.message;
-    }
-
-    throw new Error(`There's an error selecting operation: ${errorMessage}`);
+    throw new Error(`There's an error selecting operation: ${error.message}`);
   }
 };
