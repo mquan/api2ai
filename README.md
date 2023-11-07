@@ -32,7 +32,7 @@ const OPEN_AI_KEY = "sk-...";
 
 const agent = new ApiAgent({
   apiKey: OPEN_AI_KEY,
-  model: "gpt-3.5-turbo-0613", // "gpt-4-0613" also works
+  model: "gpt-3.5-turbo-1106", // "gpt-4-1106-preview" also works
   apis: [
     {
       filename: "path/to/open-api-spec.yaml",
@@ -118,7 +118,7 @@ Configure your API auth credentials under the `auth` key for applicable APIs:
 ```typescript
 // server/pages/api/api2ai.config.ts
 export const configs = {
-  model: "gpt-3.5-turbo-0613",
+  model: "gpt-3.5-turbo-1106",
   token: process.env["OPEN_AI_KEY"],
   apis: [
     {

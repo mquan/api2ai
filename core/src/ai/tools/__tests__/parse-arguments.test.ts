@@ -61,7 +61,7 @@ describe("parseArguments", () => {
     const result = await parseArguments({
       userPrompt: "Add a new pet named Sticky",
       openaiApiKey: "secretKey",
-      model: "gpt-3.5-turbo-0613",
+      model: "gpt-3.5-turbo-1106",
       functionSpec,
     });
 
@@ -76,7 +76,7 @@ describe("parseArguments", () => {
     const result = await parseArguments({
       userPrompt: "Add a new pet named Sticky",
       openaiApiKey: "secretKey",
-      model: "gpt-3.5-turbo-0613",
+      model: "gpt-3.5-turbo-1106",
       functionSpec,
     });
 
@@ -93,7 +93,7 @@ describe("parseArguments", () => {
       const result = await parseArguments({
         userPrompt: "Add a new pet named Sticky",
         openaiApiKey: "secretKey",
-        model: "gpt-3.5-turbo-0613",
+        model: "gpt-3.5-turbo-1106",
         functionSpec,
       });
 
@@ -108,7 +108,7 @@ describe("parseArguments", () => {
       parseArguments({
         userPrompt: "Add a new pet named Sticky",
         openaiApiKey: "secretKey",
-        model: "gpt-3.5-turbo-0613",
+        model: "gpt-3.5-turbo-1106",
         functionSpec,
       })
     ).rejects.toThrow(

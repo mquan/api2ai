@@ -3,7 +3,7 @@ import { parse } from "../api/oas-loader";
 import { selectOperation } from "./tools/select-operation";
 import { parseArguments } from "./tools/parse-arguments";
 
-const DEFAULT_CHAT_MODEL = "gpt-3.5-turbo-0613";
+const DEFAULT_CHAT_MODEL = "gpt-3.5-turbo-1106";
 
 interface ApiInput {
   filename: string;
