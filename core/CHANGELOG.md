@@ -1,5 +1,11 @@
 # @api2ai/core
 
+## 0.6.1
+
+### Patch Changes
+
+- Upgrade to gpt-3.5-turbo-1106 model
+
 ## 0.6.0
 
 ### Patch Changes
